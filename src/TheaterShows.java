@@ -6,7 +6,7 @@ public class TheaterShows {
 
     private static final String URL = "jdbc:mysql://localhost:3306/theatershows";
     private static final String USER = "root";
-    private static final String PASSWORD = " "; //<----- enter your password in mysql
+    private static final String PASSWORD = ""; // <----- enter your password in mysql
 
     private static Connection conn = null;
 
@@ -14,13 +14,14 @@ public class TheaterShows {
 
     private static void createDatabase() throws databaseCreated {
         String url = "jdbc:mysql://localhost:3306/?allowMultiQueries=true";
-        String scriptFilePath = "GROUP8-DBCREATION.sql"; 
+        String scriptFilePath = "GROUP8-DBCREATION.sql";
         Statement statement = null;
 
         try {
-            conn = DriverManager.getConnection(url, USER, PASSWORD); // Create a connection to MySQL (no database selected yet)
+            conn = DriverManager.getConnection(url, USER, PASSWORD); // Create a connection to MySQL (no database
+                                                                     // selected yet)
 
-            statement = conn.createStatement();                     // Create a Statement object to execute the script
+            statement = conn.createStatement(); // Create a Statement object to execute the script
 
             // check if database already exists
             String checkDBQuery = "SHOW DATABASES LIKE 'theatershows';";
@@ -28,11 +29,11 @@ public class TheaterShows {
 
             if (rs.next()) {
                 throw new databaseCreated("Database already exists. Proceeding to connect...");
-            } 
+            }
 
             else {
-                String script = readScriptFile(scriptFilePath);         // Read the SQL script file
-                statement.executeUpdate(script);                         // Execute the script to create the database
+                String script = readScriptFile(scriptFilePath); // Read the SQL script file
+                statement.executeUpdate(script); // Execute the script to create the database
                 System.out.println("Database created successfully!");
             }
 
@@ -68,7 +69,7 @@ public class TheaterShows {
             conn = DriverManager.getConnection(URL, USER, PASSWORD);
             System.out.println("Connected to database.\n");
 
-        }   catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
@@ -103,7 +104,7 @@ public class TheaterShows {
             pstmt.setString(4, emailAdd);
             pstmt.executeUpdate();
 
-        }   catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
@@ -123,26 +124,34 @@ public class TheaterShows {
                 String phoneNo = rs.getString("PHONE_NUMBER");
                 String emailAdd = rs.getString("EMAIL_ADDRESS");
 
-                System.out.println("ID: " + id + ", \nFirst Name: " + fName + ", \nLast Name: " + lName + ", \nPhone Number: " + phoneNo + ", \nEmail Address: " + emailAdd);
+                System.out.println("ID: " + id + ", \nFirst Name: " + fName + ", \nLast Name: " + lName
+                        + ", \nPhone Number: " + phoneNo + ", \nEmail Address: " + emailAdd);
                 System.out.println("-------------------------------------------------------");
             }
 
-        }   catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public static void main(String[] args) {   
+    public static Connection getConnection() throws SQLException {
+        if (conn == null || conn.isClosed()) {
+            conn = DriverManager.getConnection(URL, USER, PASSWORD);
+        }
+        return conn;
+    }
+
+    public static void main(String[] args) {
 
         // check if database is already created:
         try {
-            createDatabase();       // Step 1: Create the database 
+            createDatabase(); // Step 1: Create the database
         } catch (Exception e) {
             // System.out.println("Database already exists. Proceeding to connect...");
             System.out.println(e.getMessage());
         }
 
-        connectToDB();             // Step 2: Connect to the database
+        connectToDB(); // Step 2: Connect to the database
         int option = 0;
 
         do {
@@ -154,7 +163,8 @@ public class TheaterShows {
             System.out.print("\nChoose an option: ");
             option = Integer.parseInt(scan.nextLine());
 
-            switch (option) {   // update this main function to change UI (was thinking of like option 1: customer view, option 2: admin view somethin like that)
+            switch (option) { // update this main function to change UI (was thinking of like option 1:
+                              // customer view, option 2: admin view somethin like that)
                 case 1:
                     System.out.println("\nEnter Add Show Here\n");
                     break;
@@ -162,14 +172,14 @@ public class TheaterShows {
                     System.out.println("\nEnter Add Theater Here\n");
                     break;
                 case 3:
-                    System.out.println("\nEnter Add Staff Here\n");
+                    StaffRecords.staffMenu(scan);
                     break;
                 case 4:
                     enterCustomerDetails();
                     System.out.println("\n-----------------------Customers-----------------------");
-                    viewCustomers();          // View all customers in the database, will move this once UI is finalized
+                    viewCustomers(); // View all customers in the database, will move this once UI is finalized
                     System.out.println("");
-                    break;                      // Will add UPDATE and DELETE next
+                    break; // Will add UPDATE and DELETE next
                 case 0:
                     System.out.println("Thank You!");
                     break;
@@ -185,4 +195,5 @@ class databaseCreated extends Exception {
     public databaseCreated(String message) {
         super(message);
     }
+
 }
