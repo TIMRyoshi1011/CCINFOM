@@ -3,8 +3,6 @@ import java.util.Scanner;
 
 public class StaffRecords {
 
-    // Use Main.header(...) and Main.subheader() for dividers (centralized in Main)
-
     // Add new staff
     public static void enterStaffDetails(Scanner scan) {
         System.out.println("");
@@ -242,7 +240,7 @@ public class StaffRecords {
                 int salary = rs.getInt("SALARY");
 
                 System.out.println("ID: " + id + " | Name: " + firstName + " " + lastName + " | Position: " + position
-                        + " | Salary: $" + salary);
+                        + " | Salary: ₱" + salary);
                 Main.subheader();
             }
 
@@ -378,7 +376,7 @@ public class StaffRecords {
         System.out.println("Name: " + firstName + " " + lastName);
         System.out.println("Position: " + position);
         System.out.println("Employment Status: " + status);
-        System.out.println("Salary: $" + salary);
+        System.out.println("Salary: ₱" + salary);
         Main.subheader();
     }
 

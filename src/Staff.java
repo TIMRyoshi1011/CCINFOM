@@ -79,7 +79,7 @@ public class Staff {
         System.out.println("Position: " + this.position);
         System.out.println("Status: " + this.status);
         System.out.println("Shift: " + this.shift);
-        System.out.println("Salary: $" + this.salary);
+        System.out.println("Salary: ₱" + this.salary);
         Main.subheader();
     }
 }
