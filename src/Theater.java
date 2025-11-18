@@ -2,13 +2,15 @@ public class Theater {
     
     private String theater_ID;
     private String theater_Name;
-    private Integer capacity;
+    private Integer capacity, max_Rows, max_Cols;
     private String theater_Status;
 
-    public Theater(String theater_ID, String theater_Name, Integer capacity, String theater_Status) {
+    public Theater(String theater_ID, String theater_Name, Integer capacity, Integer max_Rows, Integer max_Cols, String theater_Status) {
         this.theater_ID = theater_ID;
         this.theater_Name = theater_Name;
         this.capacity = capacity;
+        this.max_Rows = max_Rows;
+        this.max_Cols = max_Cols;
         this.theater_Status = theater_Status;
     }
 
@@ -34,6 +36,22 @@ public class Theater {
 
     public void setCapacity (Integer capacity) {
         this.capacity = capacity;
+    }
+
+    public Integer getMaxRows () {
+        return this.max_Rows;
+    }
+
+    public void setMaxRows (Integer max_Rows) {
+        this.max_Rows = max_Rows;
+    }
+
+    public Integer getMaxCols () {
+        return this.max_Cols;
+    }
+
+    public void setMaxCols (Integer max_Cols) {
+        this.max_Cols = max_Cols;
     }
 
     public String getReservationStatus () {

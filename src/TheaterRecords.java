@@ -12,7 +12,7 @@ public class TheaterRecords {
     public static void addTheaterRecord(Scanner scan) {
 
         String theater_Name, theater_Status;
-        int capacity;
+        int capacity, max_Rows, max_Cols;
 
         do { 
             System.out.print("Theater Name: ");
@@ -34,18 +34,38 @@ public class TheaterRecords {
         } while (capacity <= 0);
 
         do { 
+            System.out.print("Maximum Rows: ");
+            max_Rows = scan.nextInt();
+            scan.nextLine(); //to consume new line
+
+            if(max_Rows <= 0 || max_Rows > 5) {
+                System.out.println("Maximum Rows should be greater than 0 but less than or equal to 5, please try again.");
+            }
+        } while (max_Rows <= 0 || max_Rows > 5);
+
+        do { 
+            System.out.print("Maximum Columns: ");
+            max_Cols = scan.nextInt();
+            scan.nextLine(); //to consume new line
+
+            if(max_Cols <= 0 || max_Cols > 10) {
+                System.out.println("Maximum Rows should be greater than 0 but less than or equal to 10, please try again.");
+            }
+        } while (max_Rows <= 0 || max_Rows > 5);
+
+        do { 
             System.out.print("Theater Status: ");
             theater_Status = scan.nextLine().trim().toUpperCase();
         } while (theater_Status.isEmpty());
 
-        //addTheaterToDB(theater_Name, capacity, reservation_Status);
+        addTheaterToDB(theater_Name, capacity, max_Rows, max_Cols, theater_Status);
 
         System.out.println("Theater record added.");
     }
 
     //Adds Theater Record to Database
-    public static void addTheaterToDB (String theater_Name, int capacity, String theater_Status) {
-        String query = "INSERT INTO theaters (THEATER_NAME, CAPACITY, THEATER_STATUS) VALUES (?, ?, ?)";
+    public static void addTheaterToDB (String theater_Name, int capacity, int max_Rows, int max_Cols, String theater_Status) {
+        String query = "INSERT INTO theaters (THEATER_NAME, CAPACITY, MAX_ROWS, MAX_COLS, THEATER_STATUS) VALUES (?, ?, ?, ?, ?)";
 
         try {
             Connection conn = Main.getConnection();
@@ -53,7 +73,9 @@ public class TheaterRecords {
 
             pstmt.setString(1, theater_Name);
             pstmt.setInt(2, capacity);
-            pstmt.setString(3, theater_Status);
+            pstmt.setInt(3, max_Rows);
+            pstmt.setInt(4, max_Cols);
+            pstmt.setString(5, theater_Status);
             pstmt.executeUpdate();
 
             System.out.println("\nTheater Record added successfully!");
@@ -76,15 +98,23 @@ public class TheaterRecords {
         int capacity = scan.nextInt();
         scan.nextLine(); //To consume new line
 
+        System.out.print("Enter New Theater Maximum Rows (or press enter to skip): ");
+        int max_Rows = scan.nextInt();
+        scan.nextLine(); //To consume new line
+
+        System.out.print("Enter New Theater Maximum Columns (or press enter to skip): ");
+        int max_Cols = scan.nextInt();
+        scan.nextLine(); //To consume new line
+
         System.out.print("Enter New Theater Status (or press enter to skip): ");
         String theater_Status = scan.nextLine();
 
-        updateTheaterInDB(theater_ID, theater_Name, capacity, theater_Status);
+        updateTheaterInDB(theater_ID, theater_Name, capacity, max_Rows, max_Cols, theater_Status);
 
     }
 
     //Updates Theater Record in Database
-    public static void updateTheaterInDB(String theater_ID, String theater_Name, int capacity, String theater_Status) {
+    public static void updateTheaterInDB(String theater_ID, String theater_Name, int capacity, int max_Rows, int max_Cols, String theater_Status) {
         StringBuilder query = new StringBuilder("UPDATE theaters SET ");
         boolean hasUpdate = false;
 
@@ -97,6 +127,14 @@ public class TheaterRecords {
             }
             if (capacity > 0) {
                 query.append("CAPACITY = ?, ");
+                hasUpdate = true;
+            }
+            if (max_Rows > 0 && max_Rows <= 5) {
+                query.append("MAX_ROWS = ?, ");
+                hasUpdate = true;
+            }
+            if (max_Cols > 0 && max_Cols <= 10) {
+                query.append("MAX_COLS = ?, ");
                 hasUpdate = true;
             }
             if (!theater_Status.isEmpty()) {
@@ -120,6 +158,12 @@ public class TheaterRecords {
             }
             if (capacity > 0) {
                 pstmt.setInt(paramIndex++, capacity);
+            }
+            if (max_Rows > 0 && max_Rows <= 5) {
+                pstmt.setInt(paramIndex++, max_Rows);
+            }
+            if (max_Cols > 0 && max_Cols <= 10) {
+                pstmt.setInt(paramIndex++, max_Cols);
             }
             if (!theater_Status.isEmpty()) {
                 pstmt.setString(paramIndex++, theater_Status);
@@ -325,10 +369,13 @@ public class TheaterRecords {
         String theater_ID = rs.getString("THEATER_ID");
         String theater_Name = rs.getString("THEATER_NAME");
         int capacity = rs.getInt("CAPACITY");
+        int max_Rows = rs.getInt("MAX_ROWS");
+        int max_Cols = rs.getInt("MAX_COLS");
         String theater_Status = rs.getString("THEATER_STATUS");
 
-        System.out.println("Theater ID: " + theater_ID + " | Theater Name: " + theater_Name + " | Capacity: " + capacity + " | Theater Status: " + theater_Status);
-        Main.subheader();
+        System.out.println("Theater ID: " + theater_ID + " | Theater Name: " + theater_Name + " | Capacity: " + capacity + 
+                            " | Max Rows: " + max_Rows + " | Max Columns: " + max_Cols + " | Theater Status: " + theater_Status);
+        Main.header();
     }
 
     public static void theaterMenu(Scanner sc) {
