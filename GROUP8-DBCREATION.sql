@@ -22,6 +22,7 @@ CREATE TABLE `theaters` (
   `THEATER_ID` VARCHAR(8),
   `THEATER_NAME` VARCHAR(20),
   `CAPACITY` INT,
+  `THEATER_STATUS` VARCHAR(20),
   PRIMARY KEY (`THEATER_ID`)
 );
 
@@ -366,17 +367,17 @@ VALUES
 
 INSERT INTO shows (TITLE, RUNTIME, SHOW_PRICE, STATUS)
 VALUES
-('Hamilton', '2:55:00', 8500, 'Ongoing'),
-('Les Misérables', '2:50:00', 4000, 'Ongoing'),
-('Dear Evan Hansen', '2:30:00', 3200, 'Ongoing'),
-('Mamma Mia', '2:30:00', 5600, 'Ongoing'),
-('Lion King', '2:30:00', 4125, 'Ongoing');
+('Hamilton', '2:55:00', 8500, 'ONGOING'),
+('Les Misérables', '2:50:00', 4000, 'ONGOING'),
+('Dear Evan Hansen', '2:30:00', 3200, 'ONGOING'),
+('Mamma Mia', '2:30:00', 5600, 'ONGOING'),
+('Lion King', '2:30:00', 4125, 'ONGOING');
 
-INSERT INTO theaters (THEATER_NAME, CAPACITY)
+INSERT INTO theaters (THEATER_NAME, CAPACITY, THEATER_STATUS)
 VALUES
-('MAGALANG', 500),
-('MATALINO', 300),
-('MAKABAYAN', 1350);
+('MAGALANG', 500, 'ACTIVE'),
+('MATALINO', 300, 'ACTIVE'),
+('MAKABAYAN', 1350, 'ACTIVE');
 
 INSERT INTO theater_reservation (RESERVED_DATE, RESERVATION_STATUS)
 VALUES
