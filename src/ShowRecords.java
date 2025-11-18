@@ -36,6 +36,7 @@ public class ShowRecords {
 
         System.out.print("Enter Price: ");
         int price = scan.nextInt();
+        scan.nextLine();
 
         System.out.print("Enter Status(Upcoming, Ongoing, Completed): ");
         String status = scan.nextLine().toUpperCase().trim();
@@ -57,7 +58,7 @@ public class ShowRecords {
                 return new Show(
                         rs.getString("title"),
                         rs.getTime("runtime").toLocalTime(),
-                        rs.getInt("price"),
+                        rs.getInt("show_price"),
                         rs.getString("status")
                 );
             }
@@ -82,7 +83,7 @@ public class ShowRecords {
             pstmt.setTime(2, java.sql.Time.valueOf(runtime));
             pstmt.setInt(3, price);
             pstmt.setString(4, status);
-            pstmt.setString(5, showId);  // the show we want to update
+            pstmt.setString(5, showId);
 
             int rows = pstmt.executeUpdate();
 
@@ -164,7 +165,7 @@ public class ShowRecords {
         String showId = rs.getString("show_id");
         String title = rs.getString("title");
         LocalTime runtime = LocalTime.parse(rs.getString("runtime"));
-        String price = rs.getString("price");
+        String price = rs.getString("show_price");
         String status = rs.getString("STATUS");
 
         System.out.println("Show ID: " + showId + " | Title: " + title);

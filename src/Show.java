@@ -30,7 +30,7 @@ public class Show {
 
     public void showDetails(){
         System.out.println("________________________________");
-        System.out.println("Show ID: " + this.showId + " | " + this.title);
+        System.out.println("Title: " + this.title);
         System.out.println("Runtime: " + this.runtime);
         System.out.println("Status: " + this.status);
         System.out.println("Price: P" + this.price);
