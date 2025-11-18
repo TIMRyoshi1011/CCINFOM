@@ -224,7 +224,7 @@ public class StaffRecords {
 
     // View all staff salaries
     public static void viewAllStaffSalaries() {
-        String query = "SELECT STAFF_ID, FIRST_NAME, LAST_NAME, POSITION, SALARY FROM staff ORDER BY SALARY DESC";
+        String query = "SELECT * FROM staff ORDER BY SALARY DESC";
 
         try {
             Connection conn = Main.getConnection();
@@ -233,15 +233,7 @@ public class StaffRecords {
 
             Main.header("All Staff Salaries");
             while (rs.next()) {
-                String id = rs.getString("STAFF_ID");
-                String firstName = rs.getString("FIRST_NAME");
-                String lastName = rs.getString("LAST_NAME");
-                String position = rs.getString("POSITION");
-                int salary = rs.getInt("SALARY");
-
-                System.out.println("ID: " + id + " | Name: " + firstName + " " + lastName + " | Position: " + position
-                        + " | Salary: ₱" + salary);
-                Main.subheader();
+                displayStaffRecord(rs);
             }
 
         } catch (SQLException e) {
@@ -293,10 +285,12 @@ public class StaffRecords {
         System.out.print("Enter Staff ID: ");
         String staffId = scan.nextLine();
 
-        String query = "SELECT s.*, sh.TITLE as SHOW_TITLE, sh.THEATER_ID " +
+        String query = "SELECT s.*, sh.TITLE as SHOW_TITLE, tr.THEATER_ID " +
                 "FROM staff s " +
-                "LEFT JOIN show_staff ss ON s.STAFF_ID = ss.STAFF_ID " +
-                "LEFT JOIN shows sh ON ss.SHOW_ID = sh.SHOW_ID " +
+                "LEFT JOIN staff_assignment sa ON s.STAFF_ID = sa.STAFF_ID " +
+                "LEFT JOIN theater_shows ts ON sa.THEATER_SHOW_ID = ts.THEATER_SHOW_ID " +
+                "LEFT JOIN shows sh ON ts.SHOW_ID = sh.SHOW_ID " +
+                "LEFT JOIN theater_reservation tr ON ts.THEATER_RESERVATION_ID = tr.THEATER_RESERVATION_ID " +
                 "WHERE s.STAFF_ID = ?";
 
         try {
@@ -316,8 +310,9 @@ public class StaffRecords {
 
                 String showTitle = rs.getString("SHOW_TITLE");
                 if (showTitle != null) {
-                    int theaterId = rs.getInt("THEATER_ID");
-                    System.out.println("  Assigned to Show: " + showTitle + " | Theater ID: " + theaterId);
+                    String theaterId = rs.getString("THEATER_ID");
+                    System.out.println("  Assigned to Show: " + showTitle +
+                            (theaterId != null ? " | Theater ID: " + theaterId : ""));
                 }
             }
 
@@ -338,8 +333,9 @@ public class StaffRecords {
 
         String query = "SELECT s.* " +
                 "FROM staff s " +
-                "JOIN show_staff ss ON s.STAFF_ID = ss.STAFF_ID " +
-                "WHERE ss.SHOW_ID = ?";
+                "JOIN staff_assignment sa ON s.STAFF_ID = sa.STAFF_ID " +
+                "JOIN theater_shows ts ON sa.THEATER_SHOW_ID = ts.THEATER_SHOW_ID " +
+                "WHERE ts.SHOW_ID = ?";
 
         try {
             Connection conn = Main.getConnection();

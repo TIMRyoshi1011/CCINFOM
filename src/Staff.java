@@ -1,7 +1,5 @@
 public class Staff {
 
-    // Use Main.header(...) and Main.subheader() for centralized dividers
-
     private String staffId;
     private String firstName;
     private String lastName;
