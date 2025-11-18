@@ -58,7 +58,7 @@ public class ShowRecords {
                 return new Show(
                         rs.getString("title"),
                         rs.getTime("runtime").toLocalTime(),
-                        rs.getInt("price"),
+                        rs.getInt("show_price"),
                         rs.getString("status")
                 );
             }
@@ -165,7 +165,7 @@ public class ShowRecords {
         String showId = rs.getString("show_id");
         String title = rs.getString("title");
         LocalTime runtime = LocalTime.parse(rs.getString("runtime"));
-        String price = rs.getString("price");
+        String price = rs.getString("show_price");
         String status = rs.getString("STATUS");
 
         System.out.println("Show ID: " + showId + " | Title: " + title);
