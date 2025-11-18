@@ -1,5 +1,7 @@
 public class Staff {
 
+    // Use Main.header(...) and Main.subheader() for centralized dividers
+
     private String staffId;
     private String firstName;
     private String lastName;
@@ -72,12 +74,12 @@ public class Staff {
     }
 
     public void staffDetails() {
-        System.out.println("________________________________");
+        Main.header("Staff Details");
         System.out.println("Staff ID: " + this.staffId + " | " + this.firstName + " " + this.lastName);
         System.out.println("Position: " + this.position);
         System.out.println("Status: " + this.status);
         System.out.println("Shift: " + this.shift);
         System.out.println("Salary: $" + this.salary);
-        System.out.println("________________________________");
+        Main.subheader();
     }
 }

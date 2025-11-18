@@ -3,6 +3,8 @@ import java.util.Scanner;
 
 public class StaffRecords {
 
+    // Use Main.header(...) and Main.subheader() for dividers (centralized in Main)
+
     // Add new staff
     public static void enterStaffDetails(Scanner scan) {
         System.out.println("");
@@ -176,7 +178,7 @@ public class StaffRecords {
             pstmt.setString(1, position);
             ResultSet rs = pstmt.executeQuery();
 
-            System.out.println("\n-----------------------Staff by Position: " + position + "-----------------------");
+            Main.header("Staff by Position: " + position);
             boolean found = false;
             while (rs.next()) {
                 found = true;
@@ -194,8 +196,6 @@ public class StaffRecords {
 
     // View staff by shift
     public static void viewStaffByShift(Scanner scan) {
-        // Replaced: view by shift not supported in current schema. Use Employment
-        // Status.
         System.out.println("");
         System.out.print("Enter Employment Status to search (Active/Inactive): ");
         String status = scan.nextLine();
@@ -208,8 +208,7 @@ public class StaffRecords {
             pstmt.setString(1, status);
             ResultSet rs = pstmt.executeQuery();
 
-            System.out.println(
-                    "\n-----------------------Staff by Employment Status: " + status + "-----------------------");
+            Main.header("Staff by Employment Status: " + status);
             boolean found = false;
             while (rs.next()) {
                 found = true;
@@ -234,7 +233,7 @@ public class StaffRecords {
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(query);
 
-            System.out.println("\n-----------------------All Staff Salaries-----------------------");
+            Main.header("All Staff Salaries");
             while (rs.next()) {
                 String id = rs.getString("STAFF_ID");
                 String firstName = rs.getString("FIRST_NAME");
@@ -244,7 +243,7 @@ public class StaffRecords {
 
                 System.out.println("ID: " + id + " | Name: " + firstName + " " + lastName + " | Position: " + position
                         + " | Salary: $" + salary);
-                System.out.println("-------------------------------------------------------");
+                Main.subheader();
             }
 
         } catch (SQLException e) {
@@ -261,7 +260,7 @@ public class StaffRecords {
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(query);
 
-            System.out.println("\n-----------------------All Staff Members-----------------------");
+            Main.header("All Staff Members");
             while (rs.next()) {
                 displayStaffRecord(rs);
             }
@@ -280,7 +279,7 @@ public class StaffRecords {
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(query);
 
-            System.out.println("\n-----------------------All Active Staff Members-----------------------");
+            Main.header("All Active Staff Members");
             while (rs.next()) {
                 displayStaffRecord(rs);
             }
@@ -308,7 +307,7 @@ public class StaffRecords {
             pstmt.setString(1, staffId);
             ResultSet rs = pstmt.executeQuery();
 
-            System.out.println("\n-----------------------Staff Details with Shows-----------------------");
+            Main.header("Staff Details with Shows");
             boolean found = false;
             while (rs.next()) {
                 if (!found) {
@@ -350,7 +349,7 @@ public class StaffRecords {
             pstmt.setString(1, showId);
             ResultSet rs = pstmt.executeQuery();
 
-            System.out.println("\n-----------------------Staff for Show ID: " + showId + "-----------------------");
+            Main.header("Staff for Show ID: " + showId);
             boolean found = false;
             while (rs.next()) {
                 found = true;
@@ -375,10 +374,12 @@ public class StaffRecords {
         String status = rs.getString("EMPLOYMENT_STATUS");
         int salary = rs.getInt("SALARY");
 
-        System.out.println("ID: " + id + " | Name: " + firstName + " " + lastName);
-        System.out.println("Position: " + position + " | Employment Status: " + status);
+        System.out.println("ID: " + id);
+        System.out.println("Name: " + firstName + " " + lastName);
+        System.out.println("Position: " + position);
+        System.out.println("Employment Status: " + status);
         System.out.println("Salary: $" + salary);
-        System.out.println("-------------------------------------------------------");
+        Main.subheader();
     }
 
     // Staff management menu
