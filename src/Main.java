@@ -1,10 +1,11 @@
+
 //import java.io.*;
 import java.sql.*;
 import java.util.Scanner;
 
 public class Main {
 
-    private static final int width = 50;
+    private static final int width = 55;
 
     public static void header(String title) {
         String content = " " + title + " ";
@@ -26,7 +27,7 @@ public class Main {
 
     private static final String URL = "jdbc:mysql://localhost:3306/theatershows";
     private static final String USER = "root";
-    private static final String PASSWORD = ""; // <----- enter your password in mysql
+    private static final String PASSWORD = "Anielajae2_"; // <----- enter your password in mysql
 
     private static Connection conn = null;
 
@@ -177,7 +178,8 @@ public class Main {
         } while (select > 4 || select < 0);
     }
 
-    // --------------------------Reports to be Generated------------------------------
+    // --------------------------Reports to be
+    // Generated------------------------------
     public static void generateReports() {
         int select;
         header("Select Report");
@@ -202,7 +204,7 @@ public class Main {
                     System.out.println("\nFinancial Performance Report\n");
                     break;
                 case 4:
-                    System.out.println("\nStaff Assignment Report\n");
+                    StaffAssignmentReport.generateReport(scan);
                     break;
                 case 0:
                     System.out.println("Returning to main menu...");
@@ -230,7 +232,7 @@ public class Main {
         }
 
         connectToDB(); // Step 2: Connect to the database
-        
+
         while (option != 0) {
             System.out.println("1 - Manage Records");
             System.out.println("2 - Make a Transaction");

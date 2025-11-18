@@ -375,7 +375,7 @@ public class TheaterRecords {
 
         System.out.println("Theater ID: " + theater_ID + " | Theater Name: " + theater_Name + " | Capacity: " + capacity + 
                             " | Max Rows: " + max_Rows + " | Max Columns: " + max_Cols + " | Theater Status: " + theater_Status);
-        Main.header();
+        Main.subheader();
     }
 
     public static void theaterMenu(Scanner sc) {
