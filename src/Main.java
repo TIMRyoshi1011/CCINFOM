@@ -122,7 +122,7 @@ public class Main {
 
             switch (select) {
                 case 1:
-                    System.out.println("\nEnter Add Show Here\n");
+                    ShowRecords.ShowMenu(scan);
                     break;
                 case 2:
                     System.out.println("\nEnter Add Theater Here\n");
@@ -178,8 +178,7 @@ public class Main {
         } while (select > 4 || select < 0);
     }
 
-    // --------------------------Reports to be
-    // Generated------------------------------
+    // --------------------------Reports to be Generated------------------------------
     public static void generateReports() {
         int select;
         header("Select Report");

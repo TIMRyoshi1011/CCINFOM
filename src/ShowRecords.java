@@ -243,7 +243,7 @@ public class ShowRecords {
         }
     }
 
-    public static void staffMenu(Scanner scan) {
+    public static void ShowMenu(Scanner scan) {
         int option;
 
         do {
