@@ -234,6 +234,44 @@ public class CustomerRecords {
         }
     }
 
+    public static void viewCustomerBooking() {
+        String query = "SELECT c.FIRST_NAME, c.LAST_NAME, b.NOOFTICKETS, " +
+                        "GROUP_CONCAT(CONCAT('Row: ', s.ROW_NO, ', Col: ', s.COL_NO) SEPARATOR ' | ') AS SEATS, " +
+                        "sh.TITLE " +
+                        "FROM booking b " +
+                        "JOIN customers c ON b.CUSTOMER_ID = c.CUSTOMER_ID " +
+                        "JOIN seat_booking sb ON b.BOOKING_ID = sb.BOOKING_ID " +
+                        "JOIN seat s ON sb.SEAT_ID = s.SEAT_ID " +
+                        "JOIN theater_shows ts ON b.THEATER_SHOW_ID = ts.THEATER_SHOW_ID " +
+                        "JOIN shows sh ON ts.SHOW_ID = sh.SHOW_ID " +
+                        "GROUP BY b.BOOKING_ID;";
+
+        try {
+            Connection conn = Main.getConnection();
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+
+            System.out.println("\n-------------------All Customer Bookings--------------------");
+
+            while (rs.next()) {
+                String fName = rs.getString("FIRST_NAME");
+                String lName = rs.getString("LAST_NAME");
+                int noTickets = rs.getInt("NOOFTICKETS");
+                String seats = rs.getString("SEATS"); 
+                String title = rs.getString("TITLE");
+
+                System.out.println("Name: " + fName + " " + lName);
+                System.out.println("Number of tickets: " + noTickets);
+                System.out.println("Seats: " + seats);
+                System.out.println("Show Title: " + title);
+                System.out.println("-------------------------------------------------------");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void customerMenu(Scanner scan) {
         int option = 0;
 
@@ -276,8 +314,8 @@ public class CustomerRecords {
                     next(scan);
                     break;
                 case 7:
-                    //Enter customer with bookings here
-                    // next(scan);
+                    viewCustomerBooking();
+                    next(scan);
                     break;
                 case 0:
                     System.out.println("Returning to main menu...");
