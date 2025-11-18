@@ -224,7 +224,7 @@ public class Main {
         // System.out.println(e.getMessage());
         // }
         try {
-            conn = DriverManager.getConnection(URL, USER, PASSWORD); // Create a connection to MySQL (no database selected yet)
+            conn = DriverManager.getConnection(URL, USER, PASSWORD); // Step 1: Check if database exists
         } catch (SQLException e) {
             option = 0;
         }
@@ -273,4 +273,5 @@ public class Main {
 // public databaseCreated(String message) {
 // super(message);
 // }
+
 // }
