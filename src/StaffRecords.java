@@ -15,32 +15,28 @@ public class StaffRecords {
         System.out.print("Enter Position: ");
         String position = scan.nextLine();
 
-        System.out.print("Enter Status (Active/Inactive): ");
+        System.out.print("Enter Employment Status (Active/Inactive): ");
         String status = scan.nextLine();
 
-        System.out.print("Enter Shift (Morning/Afternoon/Evening): ");
-        String shift = scan.nextLine();
-
         System.out.print("Enter Salary: ");
-        double salary = Double.parseDouble(scan.nextLine());
+        int salary = Integer.parseInt(scan.nextLine());
 
-        addStaffToDB(firstName, lastName, position, status, shift, salary);
+        addStaffToDB(firstName, lastName, position, status, salary);
     }
 
-    public static void addStaffToDB(String firstName, String lastName, String position, String status, String shift,
-            double salary) {
-        String query = "INSERT INTO staff (FIRST_NAME, LAST_NAME, POSITION, STATUS, SHIFT, SALARY) VALUES (?, ?, ?, ?, ?, ?)";
+    public static void addStaffToDB(String firstName, String lastName, String position, String status,
+            int salary) {
+        String query = "INSERT INTO staff (FIRST_NAME, LAST_NAME, POSITION, EMPLOYMENT_STATUS, SALARY) VALUES (?, ?, ?, ?, ?)";
 
         try {
-            Connection conn = Main.getConnection(); 
+            Connection conn = Main.getConnection();
             PreparedStatement pstmt = conn.prepareStatement(query);
 
             pstmt.setString(1, firstName);
             pstmt.setString(2, lastName);
             pstmt.setString(3, position);
             pstmt.setString(4, status);
-            pstmt.setString(5, shift);
-            pstmt.setDouble(6, salary);
+            pstmt.setInt(5, salary);
             pstmt.executeUpdate();
 
             System.out.println("\nStaff member added successfully!");
@@ -54,7 +50,7 @@ public class StaffRecords {
     public static void updateStaffDetails(Scanner scan) {
         System.out.println("");
         System.out.print("Enter Staff ID to update: ");
-        int staffId = Integer.parseInt(scan.nextLine());
+        String staffId = scan.nextLine();
 
         System.out.print("Enter New First Name (or press Enter to skip): ");
         String firstName = scan.nextLine();
@@ -65,26 +61,24 @@ public class StaffRecords {
         System.out.print("Enter New Position (or press Enter to skip): ");
         String position = scan.nextLine();
 
-        System.out.print("Enter New Status (or press Enter to skip): ");
+        System.out.print("Enter New Employment Status (or press Enter to skip): ");
         String status = scan.nextLine();
 
-        System.out.print("Enter New Shift (or press Enter to skip): ");
-        String shift = scan.nextLine();
-
-        System.out.print("Enter New Salary (or 0 to skip): ");
+        System.out.print("Enter New Salary (or press Enter to skip): ");
         String salaryInput = scan.nextLine();
-        Double salary = salaryInput.isEmpty() ? null : Double.parseDouble(salaryInput);
+        Integer salary = salaryInput.isEmpty() ? null : Integer.parseInt(salaryInput);
 
-        updateStaffInDB(staffId, firstName, lastName, position, status, shift, salary);
+        updateStaffInDB(staffId, firstName, lastName, position, status, salary);
     }
 
-    public static void updateStaffInDB(int staffId, String firstName, String lastName, String position, String status,
-            String shift, Double salary) {
+    public static void updateStaffInDB(String staffId, String firstName, String lastName, String position,
+            String status,
+            Integer salary) {
         StringBuilder query = new StringBuilder("UPDATE staff SET ");
         boolean hasUpdate = false;
 
         try {
-            Connection conn = Main.getConnection(); 
+            Connection conn = Main.getConnection();
 
             if (!firstName.isEmpty()) {
                 query.append("FIRST_NAME = ?, ");
@@ -99,14 +93,10 @@ public class StaffRecords {
                 hasUpdate = true;
             }
             if (!status.isEmpty()) {
-                query.append("STATUS = ?, ");
+                query.append("EMPLOYMENT_STATUS = ?, ");
                 hasUpdate = true;
             }
-            if (!shift.isEmpty()) {
-                query.append("SHIFT = ?, ");
-                hasUpdate = true;
-            }
-            if (salary != null && salary > 0) {
+            if (salary != null) {
                 query.append("SALARY = ?, ");
                 hasUpdate = true;
             }
@@ -130,12 +120,10 @@ public class StaffRecords {
                 pstmt.setString(paramIndex++, position);
             if (!status.isEmpty())
                 pstmt.setString(paramIndex++, status);
-            if (!shift.isEmpty())
-                pstmt.setString(paramIndex++, shift);
-            if (salary != null && salary > 0)
-                pstmt.setDouble(paramIndex++, salary);
+            if (salary != null)
+                pstmt.setInt(paramIndex++, salary);
 
-            pstmt.setInt(paramIndex, staffId);
+            pstmt.setString(paramIndex, staffId);
 
             int rowsAffected = pstmt.executeUpdate();
             if (rowsAffected > 0) {
@@ -153,14 +141,14 @@ public class StaffRecords {
     public static void deleteStaff(Scanner scan) {
         System.out.println("");
         System.out.print("Enter Staff ID to delete: ");
-        int staffId = Integer.parseInt(scan.nextLine());
+        String staffId = scan.nextLine();
 
         String query = "DELETE FROM staff WHERE STAFF_ID = ?";
 
         try {
-            Connection conn = Main.getConnection(); 
+            Connection conn = Main.getConnection();
             PreparedStatement pstmt = conn.prepareStatement(query);
-            pstmt.setInt(1, staffId);
+            pstmt.setString(1, staffId);
 
             int rowsAffected = pstmt.executeUpdate();
             if (rowsAffected > 0) {
@@ -183,7 +171,7 @@ public class StaffRecords {
         String query = "SELECT * FROM staff WHERE POSITION = ?";
 
         try {
-            Connection conn = Main.getConnection(); 
+            Connection conn = Main.getConnection();
             PreparedStatement pstmt = conn.prepareStatement(query);
             pstmt.setString(1, position);
             ResultSet rs = pstmt.executeQuery();
@@ -206,19 +194,22 @@ public class StaffRecords {
 
     // View staff by shift
     public static void viewStaffByShift(Scanner scan) {
+        // Replaced: view by shift not supported in current schema. Use Employment
+        // Status.
         System.out.println("");
-        System.out.print("Enter Shift to search (Morning/Afternoon/Evening): ");
-        String shift = scan.nextLine();
+        System.out.print("Enter Employment Status to search (Active/Inactive): ");
+        String status = scan.nextLine();
 
-        String query = "SELECT * FROM staff WHERE SHIFT = ?";
+        String query = "SELECT * FROM staff WHERE EMPLOYMENT_STATUS = ?";
 
         try {
-            Connection conn = Main.getConnection(); 
+            Connection conn = Main.getConnection();
             PreparedStatement pstmt = conn.prepareStatement(query);
-            pstmt.setString(1, shift);
+            pstmt.setString(1, status);
             ResultSet rs = pstmt.executeQuery();
 
-            System.out.println("\n-----------------------Staff by Shift: " + shift + "-----------------------");
+            System.out.println(
+                    "\n-----------------------Staff by Employment Status: " + status + "-----------------------");
             boolean found = false;
             while (rs.next()) {
                 found = true;
@@ -226,7 +217,7 @@ public class StaffRecords {
             }
 
             if (!found) {
-                System.out.println("No staff found for shift: " + shift);
+                System.out.println("No staff found for status: " + status);
             }
 
         } catch (SQLException e) {
@@ -239,17 +230,17 @@ public class StaffRecords {
         String query = "SELECT STAFF_ID, FIRST_NAME, LAST_NAME, POSITION, SALARY FROM staff ORDER BY SALARY DESC";
 
         try {
-            Connection conn = Main.getConnection(); 
+            Connection conn = Main.getConnection();
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(query);
 
             System.out.println("\n-----------------------All Staff Salaries-----------------------");
             while (rs.next()) {
-                int id = rs.getInt("STAFF_ID");
+                String id = rs.getString("STAFF_ID");
                 String firstName = rs.getString("FIRST_NAME");
                 String lastName = rs.getString("LAST_NAME");
                 String position = rs.getString("POSITION");
-                double salary = rs.getDouble("SALARY");
+                int salary = rs.getInt("SALARY");
 
                 System.out.println("ID: " + id + " | Name: " + firstName + " " + lastName + " | Position: " + position
                         + " | Salary: $" + salary);
@@ -266,7 +257,7 @@ public class StaffRecords {
         String query = "SELECT * FROM staff";
 
         try {
-            Connection conn = Main.getConnection(); 
+            Connection conn = Main.getConnection();
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(query);
 
@@ -282,10 +273,10 @@ public class StaffRecords {
 
     // List all active staff members
     public static void listAllActiveStaff() {
-        String query = "SELECT * FROM staff WHERE STATUS = 'Active'";
+        String query = "SELECT * FROM staff WHERE EMPLOYMENT_STATUS = 'Active'";
 
         try {
-            Connection conn = Main.getConnection(); 
+            Connection conn = Main.getConnection();
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(query);
 
@@ -303,7 +294,7 @@ public class StaffRecords {
     public static void viewStaffWithShowDetails(Scanner scan) {
         System.out.println("");
         System.out.print("Enter Staff ID: ");
-        int staffId = Integer.parseInt(scan.nextLine());
+        String staffId = scan.nextLine();
 
         String query = "SELECT s.*, sh.TITLE as SHOW_TITLE, sh.THEATER_ID " +
                 "FROM staff s " +
@@ -312,9 +303,9 @@ public class StaffRecords {
                 "WHERE s.STAFF_ID = ?";
 
         try {
-            Connection conn = Main.getConnection(); 
+            Connection conn = Main.getConnection();
             PreparedStatement pstmt = conn.prepareStatement(query);
-            pstmt.setInt(1, staffId);
+            pstmt.setString(1, staffId);
             ResultSet rs = pstmt.executeQuery();
 
             System.out.println("\n-----------------------Staff Details with Shows-----------------------");
@@ -354,7 +345,7 @@ public class StaffRecords {
                 "WHERE ss.SHOW_ID = ?";
 
         try {
-            Connection conn = Main.getConnection(); 
+            Connection conn = Main.getConnection();
             PreparedStatement pstmt = conn.prepareStatement(query);
             pstmt.setString(1, showId);
             ResultSet rs = pstmt.executeQuery();
@@ -377,17 +368,16 @@ public class StaffRecords {
 
     // Helper method to display staff record
     private static void displayStaffRecord(ResultSet rs) throws SQLException {
-        int id = rs.getInt("STAFF_ID");
+        String id = rs.getString("STAFF_ID");
         String firstName = rs.getString("FIRST_NAME");
         String lastName = rs.getString("LAST_NAME");
         String position = rs.getString("POSITION");
-        String status = rs.getString("STATUS");
-        String shift = rs.getString("SHIFT");
-        double salary = rs.getDouble("SALARY");
+        String status = rs.getString("EMPLOYMENT_STATUS");
+        int salary = rs.getInt("SALARY");
 
         System.out.println("ID: " + id + " | Name: " + firstName + " " + lastName);
-        System.out.println("Position: " + position + " | Status: " + status);
-        System.out.println("Shift: " + shift + " | Salary: $" + salary);
+        System.out.println("Position: " + position + " | Employment Status: " + status);
+        System.out.println("Salary: $" + salary);
         System.out.println("-------------------------------------------------------");
     }
 
@@ -401,7 +391,7 @@ public class StaffRecords {
             System.out.println("2. Update Staff Details");
             System.out.println("3. Delete Staff Record");
             System.out.println("4. View Staff by Position");
-            System.out.println("5. View Staff by Shift");
+            System.out.println("5. View Staff by Employment Status");
             System.out.println("6. View All Staff Salaries");
             System.out.println("7. List All Staff Members");
             System.out.println("8. List All Active Staff Members");

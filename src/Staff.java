@@ -1,15 +1,15 @@
 public class Staff {
 
-    private int staffId;
+    private String staffId;
     private String firstName;
     private String lastName;
     private String position;
     private String status;
     private String shift;
-    private double salary;
+    private int salary;
 
-    public Staff(int staffId, String firstName, String lastName, String position, String status, String shift,
-            double salary) {
+    public Staff(String staffId, String firstName, String lastName, String position, String status, String shift,
+            int salary) {
         this.staffId = staffId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -19,7 +19,7 @@ public class Staff {
         this.salary = salary;
     }
 
-    public int getStaffId() {
+    public String getStaffId() {
         return this.staffId;
     }
 
@@ -63,11 +63,11 @@ public class Staff {
         this.shift = shift;
     }
 
-    public double getSalary() {
+    public int getSalary() {
         return this.salary;
     }
 
-    public void setSalary(double salary) {
+    public void setSalary(int salary) {
         this.salary = salary;
     }
 
