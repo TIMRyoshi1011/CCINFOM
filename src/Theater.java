@@ -1,62 +1,46 @@
-import java.time.LocalDate;
-import java.util.ArrayList;
-
 public class Theater {
     
-    private ArrayList<String> theater_ID = new ArrayList<>();
-    private ArrayList<String> name = new ArrayList<>();
-    private ArrayList<Integer> capacity = new ArrayList<>();
-    private ArrayList<LocalDate> reserved_Date = new ArrayList<>();
-    private ArrayList<String> reservation_Status = new ArrayList<>();
+    private String theater_ID;
+    private String theater_Name;
+    private Integer capacity;
+    private String theater_Status;
 
-    public Theater(ArrayList<String> theater_ID, ArrayList<String> name, ArrayList<Integer> capacity, ArrayList<LocalDate> reserved_Date, ArrayList<String> reservation_Status) {
+    public Theater(String theater_ID, String theater_Name, Integer capacity, String theater_Status) {
         this.theater_ID = theater_ID;
-        this.name = name;
+        this.theater_Name = theater_Name;
         this.capacity = capacity;
-        this.reserved_Date = reserved_Date;
-        this.reservation_Status = reservation_Status;
+        this.theater_Status = theater_Status;
     }
 
-    public ArrayList<String> getTheaterID () {
+    public String getTheaterID () {
         return this.theater_ID;
     }
 
-    public void setTheaterID (ArrayList<String> theater_ID) {
+    public void setTheaterID (String theater_ID) {
         this.theater_ID = theater_ID;
     }
 
-    public ArrayList<String> getName () {
-        return this.name;
+    public String getName () {
+        return this.theater_Name;
     }
 
-    public void setName (ArrayList<String> name) {
-        this.name = name;
+    public void setName (String theater_Name) {
+        this.theater_Name = theater_Name;
     }
 
-    public ArrayList<Integer> getCapacity () {
+    public Integer getCapacity () {
         return this.capacity;
     }
 
-    public void setCapacity (ArrayList<Integer> capacity) {
+    public void setCapacity (Integer capacity) {
         this.capacity = capacity;
     }
 
-    public ArrayList<LocalDate> getReservedDate () {
-        return this.reserved_Date;
+    public String getReservationStatus () {
+        return this.theater_Status;
     }
 
-    public void setReservedDate (ArrayList<LocalDate> reserved_Date) {
-        this.reserved_Date = reserved_Date;
-    }
-
-    public ArrayList<String> reservation_Status () {
-        return this.reservation_Status;
-    }
-
-    public void setReservationStatus (ArrayList<String> reservation_Status) {
-        this.reservation_Status = reservation_Status;
+    public void setReservationStatus (String theater_Status) {
+        this.theater_Status = theater_Status;
     }
 }
-
-
-
