@@ -1,76 +1,100 @@
+
 //import java.io.*;
 import java.sql.*;
 import java.util.Scanner;
 
 public class Main {
 
+    private static final int width = 50;
+
+    public static void header(String title) {
+        String content = " " + title + " ";
+        int padding = width - content.length();
+        if (padding <= 0) {
+            System.out.println();
+            System.out.println(content);
+            return;
+        }
+        int left = padding / 2;
+        int right = padding - left;
+        System.out.println();
+        System.out.println("=".repeat(left) + content + "=".repeat(right));
+    }
+
+    public static void subheader() {
+        System.out.println("-".repeat(width));
+    }
+
     private static final String URL = "jdbc:mysql://localhost:3306/theatershows";
     private static final String USER = "root";
-    private static final String PASSWORD = "";      // <----- enter your password in mysql
+    private static final String PASSWORD = ""; // <----- enter your password in mysql
 
     private static Connection conn = null;
 
     private static Scanner scan = new Scanner(System.in);
 
-    /* 
-    private static void createDatabase() throws databaseCreated {
-        String url = "jdbc:mysql://localhost:3306/?allowMultiQueries=true";
-        String scriptFilePath = "GROUP8-DBCREATION.sql";
-        Statement statement = null;
-
-        try {
-            conn = DriverManager.getConnection(url, USER, PASSWORD); // Create a connection to MySQL (no database
-                                                                     // selected yet)
-            statement = conn.createStatement(); // Create a Statement object to execute the script
-
-            // check if database already exists
-            String checkDBQuery = "SHOW DATABASES LIKE 'theatershows';";
-            ResultSet rs = statement.executeQuery(checkDBQuery);
-
-            if (rs.next()) {
-                throw new databaseCreated("Database already exists. Proceeding to connect...");
-            }
-
-            else {
-                String script = readScriptFile(scriptFilePath); // Read the SQL script file
-                statement.executeUpdate(script); // Execute the script to create the database
-                System.out.println("Database created successfully!");
-            }
-
-        } catch (SQLException | IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (statement != null) {
-                    statement.close();
-                }
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-        }
-    }
-
-    private static String readScriptFile(String filePath) throws IOException {
-        StringBuilder script = new StringBuilder();
-        BufferedReader reader = new BufferedReader(new FileReader(filePath));
-        String line;
-        while ((line = reader.readLine()) != null) {
-            script.append(line).append("\n");
-        }
-        reader.close();
-        return script.toString();
-    }
-    */
+    /*
+     * private static void createDatabase() throws databaseCreated {
+     * String url = "jdbc:mysql://localhost:3306/?allowMultiQueries=true";
+     * String scriptFilePath = "GROUP8-DBCREATION.sql";
+     * Statement statement = null;
+     * 
+     * try {
+     * conn = DriverManager.getConnection(url, USER, PASSWORD); // Create a
+     * connection to MySQL (no database
+     * // selected yet)
+     * statement = conn.createStatement(); // Create a Statement object to execute
+     * the script
+     * 
+     * // check if database already exists
+     * String checkDBQuery = "SHOW DATABASES LIKE 'theatershows';";
+     * ResultSet rs = statement.executeQuery(checkDBQuery);
+     * 
+     * if (rs.next()) {
+     * throw new
+     * databaseCreated("Database already exists. Proceeding to connect...");
+     * }
+     * 
+     * else {
+     * String script = readScriptFile(scriptFilePath); // Read the SQL script file
+     * statement.executeUpdate(script); // Execute the script to create the database
+     * System.out.println("Database created successfully!");
+     * }
+     * 
+     * } catch (SQLException | IOException e) {
+     * System.out.println("Error: " + e.getMessage());
+     * } finally {
+     * try {
+     * if (statement != null) {
+     * statement.close();
+     * }
+     * if (conn != null) {
+     * conn.close();
+     * }
+     * } catch (SQLException ex) {
+     * System.out.println("Error: " + ex.getMessage());
+     * }
+     * }
+     * }
+     * 
+     * private static String readScriptFile(String filePath) throws IOException {
+     * StringBuilder script = new StringBuilder();
+     * BufferedReader reader = new BufferedReader(new FileReader(filePath));
+     * String line;
+     * while ((line = reader.readLine()) != null) {
+     * script.append(line).append("\n");
+     * }
+     * reader.close();
+     * return script.toString();
+     * }
+     */
     public static void connectToDB() {
         try {
             conn = DriverManager.getConnection(URL, USER, PASSWORD);
             System.out.println("Connected to database.\n");
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Error connecting to DB: " + e.getMessage());
         }
     }
 
@@ -85,8 +109,7 @@ public class Main {
 
     public static void manageRecords() {
         int select;
-
-        System.out.println("\nSelect Records: ");
+        header("Select Records");
         System.out.println("1 - Show Records");
         System.out.println("2 - Theater Records");
         System.out.println("3 - Staff Records");
@@ -97,7 +120,7 @@ public class Main {
         do {
             select = Integer.parseInt(scan.nextLine());
 
-            switch (select) { 
+            switch (select) {
                 case 1:
                     System.out.println("\nEnter Add Show Here\n");
                     break;
@@ -116,13 +139,13 @@ public class Main {
                 default:
                     System.out.print("\nInvalid option. Please try again: ");
             }
-        } while(select > 4 || select < 0);
+        } while (select > 4 || select < 0);
     }
+
     // --------------------------Transactions------------------------------
     public static void makeTransaction() {
         int select;
- 
-        System.out.println("\nSelect Transaction: ");
+        header("Select Transaction");
         System.out.println("1 - Booking Show Tickets");
         System.out.println("2 - Cancelling Bookings");
         System.out.println("3 - Setting Staff Assignments");
@@ -133,7 +156,7 @@ public class Main {
         do {
             select = Integer.parseInt(scan.nextLine());
 
-            switch (select) { 
+            switch (select) {
                 case 1:
                     System.out.println("\nBooking Show Tickets\n");
                     break;
@@ -141,10 +164,10 @@ public class Main {
                     System.out.println("\nCancelling Bookings\n");
                     break;
                 case 3:
-                    System.out.println("\nSetting Staff Assignments\n");
+                    StaffAssignment.assignStaff(scan);
                     break;
                 case 4:
-                    System.out.println("\nScheduling Showss\n");
+                    System.out.println("\nScheduling Shows\n");
                     break;
                 case 0:
                     System.out.println("Returning to main menu...");
@@ -152,13 +175,14 @@ public class Main {
                 default:
                     System.out.print("\nInvalid option. Please try again: ");
             }
-        } while(select > 4 || select < 0);
+        } while (select > 4 || select < 0);
     }
-    // --------------------------Reports to be Generated------------------------------
+
+    // --------------------------Reports to be
+    // Generated------------------------------
     public static void generateReports() {
         int select;
- 
-        System.out.println("\nSelect Report: ");
+        header("Select Report");
         System.out.println("1 - Booking Status Report");
         System.out.println("2 - Theater Performance Report");
         System.out.println("3 - Financial Performance Report");
@@ -169,7 +193,7 @@ public class Main {
         do {
             select = Integer.parseInt(scan.nextLine());
 
-            switch (select) { 
+            switch (select) {
                 case 1:
                     System.out.println("\nBooking Status Report\n");
                     break;
@@ -188,17 +212,17 @@ public class Main {
                 default:
                     System.out.print("\nInvalid option. Please try again: ");
             }
-        } while(select > 4 || select < 0);
+        } while (select > 4 || select < 0);
     }
 
     public static void main(String[] args) {
         clearConsole();
-               
+
         // check if database is already created:
         // try {
-        //     createDatabase(); // Step 1: Create the database
+        // createDatabase(); // Step 1: Create the database
         // } catch (Exception e) {
-        //     System.out.println(e.getMessage());
+        // System.out.println(e.getMessage());
         // }
         connectToDB(); // Step 2: Connect to the database
         int option;
@@ -211,7 +235,7 @@ public class Main {
             System.out.print("\nChoose an option: ");
             option = Integer.parseInt(scan.nextLine());
 
-            switch (option) { 
+            switch (option) {
                 case 1:
                     manageRecords();
                     clearConsole();
@@ -242,7 +266,7 @@ public class Main {
 }
 
 // class databaseCreated extends Exception {
-//     public databaseCreated(String message) {
-//         super(message);
-//     }
+// public databaseCreated(String message) {
+// super(message);
+// }
 // }
