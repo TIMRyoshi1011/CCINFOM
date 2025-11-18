@@ -4,7 +4,7 @@ USE `THEATERSHOWS`;
 CREATE TABLE `payment` (
   `PAYMENT_ID` VARCHAR(8),
   `AMOUNT` DECIMAL,
-  `STATUS` VARCHAR(50),
+  `PAYMENT_STATUS` VARCHAR(50),
   `PAYMENT_DATE` DATE,
   PRIMARY KEY (`PAYMENT_ID`)
 );
@@ -26,17 +26,17 @@ CREATE TABLE `theaters` (
 );
 
 CREATE TABLE `theater_reservation` (
-  `THEATER_RESERVATION_ID` VARCHAR(8),
+  `THEATER_RESERVATION_ID` VARCHAR(8) ,
   `THEATER_ID` VARCHAR(8),
   `RESERVED_DATE` DATE,
-  `STATUS` VARCHAR(20),
+  `RESERVATION_STATUS` VARCHAR(20),
   PRIMARY KEY (THEATER_RESERVATION_ID),
   FOREIGN KEY (THEATER_ID) 
 	  REFERENCES theaters(THEATER_ID)
 );
 
 CREATE TABLE `shows` (
-  `SHOW_ID` VARCHAR(8) UNIQUE,
+  `SHOW_ID` VARCHAR(8),
   `TITLE` VARCHAR(50),
   `RUNTIME` TIME,
   `SHOW_PRICE` INT,
@@ -46,7 +46,7 @@ CREATE TABLE `shows` (
 
 CREATE TABLE `theater_shows` (
   `THEATER_SHOW_ID` VARCHAR(8),
-  `THEATER_RESERVATION_ID` VARCHAR(8),
+  `THEATER_RESERVATION_ID` VARCHAR(8) UNIQUE,
   `SHOW_ID` VARCHAR(8),
   `START_TIME` TIME,
   `END_TIME` TIME,
@@ -61,18 +61,18 @@ CREATE TABLE `theater_shows` (
 
 CREATE TABLE `booking` (
   `BOOKING_ID` VARCHAR(8),
-  `CUSTOMER_ID` VARCHAR(8),
-  `THEATER_SHOW_ID` VARCHAR(8),
-  `PAYMENT_ID` VARCHAR(8),
+  `CUSTOMER_ID` VARCHAR(8) UNIQUE,
+  `THEATER_SHOW_ID` VARCHAR(8) UNIQUE,
+  `PAYMENT_ID` VARCHAR(8) UNIQUE,
   `NOOFTICKETS` INT,
   `TOTAL_PRICE` INT,
-  `STATUS` VARCHAR(50),
+  `BOOKING_STATUS` VARCHAR(50),
   `BOOKING_DATE` DATE,
   PRIMARY KEY (BOOKING_ID),
   FOREIGN KEY (CUSTOMER_ID)
       REFERENCES customers(CUSTOMER_ID),
   FOREIGN KEY (PAYMENT_ID)
-      REFERENCES payment(PAYMENT_ID) ON DELETE CASCADE,
+      REFERENCES payment(PAYMENT_ID),
   FOREIGN KEY (THEATER_SHOW_ID)
       REFERENCES theater_shows(THEATER_SHOW_ID)
 );
@@ -90,7 +90,7 @@ CREATE TABLE `seat` (
 
 CREATE TABLE `seat_booking` (
   `BOOKING_ID` VARCHAR(8),
-  `SEAT_ID` VARCHAR(8),
+  `SEAT_ID` VARCHAR(8) UNIQUE,
   PRIMARY KEY (BOOKING_ID, SEAT_ID),
   FOREIGN KEY (BOOKING_ID)
       REFERENCES booking(BOOKING_ID),
@@ -103,8 +103,7 @@ CREATE TABLE `staff` (
   `FIRST_NAME` VARCHAR(50),
   `LAST_NAME` VARCHAR(50),
   `POSITION` VARCHAR(50),
-  `STATUS` VARCHAR(50),
-  `SHIFT` VARCHAR(50),
+  `EMPLOYMENT_STATUS` VARCHAR(50),
   `SALARY` INT,
   PRIMARY KEY (STAFF_ID)
 );
@@ -353,18 +352,18 @@ VALUES
 ('Celeste', 'Alvarado', '09403675288', 'celeste.a103@gmail.com'),
 ('Rafael', 'Hernandez', '09972149063', 'emberline992@yahoo.com');
 
-INSERT INTO staff (FIRST_NAME, LAST_NAME, POSITION, STATUS, SHIFT, SALARY)
+INSERT INTO staff (FIRST_NAME, LAST_NAME, POSITION, EMPLOYMENT_STATUS, SALARY)
 VALUES
-('Marcus', 'Reyes', 'Show Manager', 'Active', NULL, 45000),
-('Emily', 'Flores', 'Stage Manager', 'Active', NULL, 40000),
-('Jonathan', 'Morales', 'Sound Technician', 'Active', NULL, 32000),
-('Victoria', 'Santos', 'Lighting Technician', 'Active', NULL, 32000),
-('Daniel', 'Cruz', 'Ticketing/Box Office', 'Active', NULL, 25000),
-('Isabelle', 'Navarro', 'Usher/Floor Staff', 'Active', NULL, 22000),
-('Adrian', 'Delgado', 'Stage Coordinator', 'Active', NULL, 35000),
-('Sophia', 'Rivera', 'Props/Set Designer', 'Active', NULL, 33000),
-('Nathan', 'Gutierrez', 'Costume/Wardrobe Staff', 'Active', NULL, 30000),
-('Olivia', 'Kim', 'Sound Assistant', 'Active', NULL, 28000);
+('Marcus', 'Reyes', 'Show Manager', 'ACTIVE', 45000),
+('Emily', 'Flores', 'Stage Manager', 'ACTIVE', 40000),
+('Jonathan', 'Morales', 'Sound Technician', 'ACTIVE', 32000),
+('Victoria', 'Santos', 'Lighting Technician', 'ACTIVE', 32000),
+('Daniel', 'Cruz', 'Ticketing/Box Office', 'ACTIVE', 25000),
+('Isabelle', 'Navarro', 'Usher/Floor Staff', 'ACTIVE', 22000),
+('Adrian', 'Delgado', 'Stage Coordinator', 'ACTIVE', 35000),
+('Sophia', 'Rivera', 'Props/Set Designer', 'ACTIVE', 33000),
+('Nathan', 'Gutierrez', 'Costume/Wardrobe Staff', 'ACTIVE', 30000),
+('Olivia', 'Kim', 'Sound Assistant', 'ACTIBE', 28000);
 
 INSERT INTO shows (TITLE, RUNTIME, SHOW_PRICE, STATUS)
 VALUES
@@ -379,6 +378,19 @@ VALUES
 ('MAGALANG', 500),
 ('MATALINO', 300),
 ('MAKABAYAN', 1350);
+
+INSERT INTO theater_reservation (RESERVED_DATE, RESERVATION_STATUS)
+VALUES
+('2026-02-05', 'RESERVED'),
+('2026-02-06', 'RESERVED'),
+('2026-02-07', 'RESERVED'),
+('2026-02-05', 'RESERVED'),
+('2026-02-06', 'RESERVED'),
+('2026-02-05', 'RESERVED'),
+('2026-02-06', 'RESERVED'),
+('2026-02-07', 'RESERVED'),
+('2026-02-08', 'RESERVED'),
+('2026-02-09', 'RESERVED');
 
 INSERT INTO theater_shows (START_TIME, END_TIME, SHOW_STATUS, AUDIENCE_TURNOUT)
 VALUES
@@ -426,7 +438,7 @@ VALUES
 (29, 12, 'TAKEN'),
 (29, 13, 'TAKEN');
 
-INSERT INTO payment (AMOUNT, STATUS, PAYMENT_DATE)
+INSERT INTO payment (AMOUNT, PAYMENT_STATUS, PAYMENT_DATE)
 VALUES
 (25500, 'PAID', '2025-11-20'),
 (17000, 'PAID', '2025-11-20'),
@@ -440,7 +452,7 @@ VALUES
 (16500, 'PAID', '2025-11-20');
 
 
-INSERT INTO booking (NOOFTICKETS, TOTAL_PRICE, STATUS, BOOKING_DATE)
+INSERT INTO booking (NOOFTICKETS, TOTAL_PRICE, BOOKING_STATUS, BOOKING_DATE)
 VALUES
 (3, 25500, 'CONFIRMED', '2025-11-20'),
 (2, 17000, 'CONFIRMED', '2025-11-20'),
