@@ -204,14 +204,15 @@ public class ShowRecords {
             pstmt.setString(1,showId);
             ResultSet rs = pstmt.executeQuery();
 
-            if (rs.getRow() <= 0){
-                System.out.println("Show Not Found.");
-                return;
+            boolean found = false;
+            System.out.println("-----Details of " + showId + " ---------");
+            while(rs.next()) {
+                found = true;
+                displayShowRecord(rs);
             }
-
-            System.out.println("-----Details of " + showId +" ---------");
-            displayShowRecord(rs);
-
+            if(!found){
+                System.out.println("Show not Found.");
+            }
         } catch (SQLException e){
             e.printStackTrace();
         }
@@ -226,15 +227,17 @@ public class ShowRecords {
             PreparedStatement pstmt = conn.prepareStatement(query);
             ResultSet rs = pstmt.executeQuery();
 
-            if (rs.getRow() <= 0){
-                System.out.println("No Upcoming Shows.");
-                return;
-            }
-
+            boolean found = false;
             System.out.println("------- Upcoming Shows---------");
             while (rs.next()){
+                found = true;
                 displayShowRecord(rs);
             }
+
+            if(!found){
+                System.out.println("No Upcoming Shows.");
+            }
+
         } catch (SQLException e){
             e.printStackTrace();
         }
