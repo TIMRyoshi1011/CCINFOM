@@ -1,4 +1,3 @@
-
 //import java.io.*;
 import java.sql.*;
 import java.util.Scanner;
@@ -27,7 +26,7 @@ public class Main {
 
     private static final String URL = "jdbc:mysql://localhost:3306/theatershows";
     private static final String USER = "root";
-    private static final String PASSWORD = "Anielajae2_"; // <----- enter your password in mysql
+    private static final String PASSWORD = "TheMarcHunter#1011"; // <----- enter your password in mysql
 
     private static Connection conn = null;
 
@@ -216,6 +215,7 @@ public class Main {
 
     public static void main(String[] args) {
         clearConsole();
+        int option = -1;
 
         // check if database is already created:
         // try {
@@ -223,10 +223,15 @@ public class Main {
         // } catch (Exception e) {
         // System.out.println(e.getMessage());
         // }
-        connectToDB(); // Step 2: Connect to the database
-        int option;
+        try {
+            conn = DriverManager.getConnection(URL, USER, PASSWORD); // Create a connection to MySQL (no database selected yet)
+        } catch (SQLException e) {
+            option = 0;
+        }
 
-        do {
+        connectToDB(); // Step 2: Connect to the database
+        
+        while (option != 0) {
             System.out.println("1 - Manage Records");
             System.out.println("2 - Make a Transaction");
             System.out.println("3 - Generate Reports");
@@ -253,7 +258,7 @@ public class Main {
                 default:
                     System.out.println("\nInvalid option. Please try again.\n");
             }
-        } while (option != 0);
+        }
 
         scan.close();
     }
