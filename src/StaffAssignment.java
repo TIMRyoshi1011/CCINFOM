@@ -17,9 +17,11 @@ public class StaffAssignment {
             conn = Main.getConnection();
 
             Main.header("Scheduled Theater Shows");
-            String showQuery = "SELECT ts.THEATER_SHOW_ID, s.TITLE, ts.START_TIME, ts.END_TIME, ts.SHOW_STATUS "
-                    + "FROM theater_shows ts JOIN shows s ON ts.SHOW_ID = s.SHOW_ID "
-                    + "WHERE ts.SHOW_STATUS = 'SCHEDULED' ORDER BY ts.START_TIME";
+            String showQuery = "SELECT ts.THEATER_SHOW_ID, s.TITLE, ts.START_TIME, ts.END_TIME, tr.RESERVED_DATE "
+                    + "FROM theater_shows ts "
+                    + "JOIN shows s ON ts.SHOW_ID = s.SHOW_ID "
+                    + "JOIN theater_reservation tr ON ts.THEATER_RESERVATION_ID = tr.THEATER_RESERVATION_ID "
+                    + "WHERE ts.SHOW_STATUS = 'SCHEDULED' ORDER BY tr.RESERVED_DATE, ts.START_TIME";
 
             try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(showQuery)) {
                 if (!rs.next()) {
@@ -28,10 +30,22 @@ public class StaffAssignment {
                 }
 
                 do {
-                    System.out.println("Theater Show ID: " + rs.getString("THEATER_SHOW_ID"));
-                    System.out.println("Title: " + rs.getString("TITLE"));
-                    System.out.println("Time: " + rs.getString("START_TIME") + " - " + rs.getString("END_TIME"));
-                    System.out.println("Status: " + rs.getString("SHOW_STATUS"));
+                    String showId = rs.getString("THEATER_SHOW_ID");
+                    String title = rs.getString("TITLE");
+                    String startTime = rs.getString("START_TIME");
+                    String endTime = rs.getString("END_TIME");
+                    String reservedDate = rs.getString("RESERVED_DATE");
+
+                    // Ensure printed lines never exceed 55 chars: ID field (12) + space + content
+                    // (42)
+                    String displayStart = (startTime != null && startTime.length() >= 5) ? startTime.substring(0, 5)
+                            : (startTime == null ? "" : startTime);
+                    String displayEnd = (endTime != null && endTime.length() >= 5) ? endTime.substring(0, 5)
+                            : (endTime == null ? "" : endTime);
+
+                    // Print show title as-is (no wrapping/truncation)
+                    System.out.printf("%-12s %s%n", showId, title);
+                    System.out.printf("             %s %s - %s%n", reservedDate, displayStart, displayEnd);
                     Main.subheader();
                 } while (rs.next());
             }
@@ -45,7 +59,7 @@ public class StaffAssignment {
             }
 
             Main.header("Available Staff for This Show");
-            String availableStaffQuery = "SELECT s.STAFF_ID, s.FIRST_NAME, s.LAST_NAME, s.POSITION, s.EMPLOYMENT_STATUS, s.SALARY "
+            String availableStaffQuery = "SELECT s.STAFF_ID, s.FIRST_NAME, s.LAST_NAME, s.POSITION "
                     + "FROM staff s "
                     + "WHERE s.EMPLOYMENT_STATUS = 'ACTIVE' "
                     + "AND s.STAFF_ID NOT IN (SELECT STAFF_ID FROM staff_assignment WHERE THEATER_SHOW_ID = ?) "
@@ -61,11 +75,12 @@ public class StaffAssignment {
                     }
 
                     do {
-                        System.out.println("ID: " + rs.getString("STAFF_ID"));
-                        System.out.println("Name: " + rs.getString("FIRST_NAME") + " " + rs.getString("LAST_NAME"));
-                        System.out.println("Position: " + rs.getString("POSITION"));
-                        System.out.println("Employment Status: " + rs.getString("EMPLOYMENT_STATUS"));
-                        System.out.println("Salary: $" + rs.getInt("SALARY"));
+                        String staffIdVal = rs.getString("STAFF_ID");
+                        String name = rs.getString("FIRST_NAME") + " " + rs.getString("LAST_NAME");
+                        String position = rs.getString("POSITION");
+                        
+                        System.out.printf("%-12s %s%n", staffIdVal, name);
+                        System.out.printf("             %s%n", position);
                         Main.subheader();
                     } while (rs.next());
                 }
