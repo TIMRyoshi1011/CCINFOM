@@ -32,7 +32,7 @@ public class StaffRecords {
         String query = "INSERT INTO staff (FIRST_NAME, LAST_NAME, POSITION, STATUS, SHIFT, SALARY) VALUES (?, ?, ?, ?, ?, ?)";
 
         try {
-            Connection conn = TheaterShows.getConnection(); 
+            Connection conn = Main.getConnection(); 
             PreparedStatement pstmt = conn.prepareStatement(query);
 
             pstmt.setString(1, firstName);
@@ -84,7 +84,7 @@ public class StaffRecords {
         boolean hasUpdate = false;
 
         try {
-            Connection conn = TheaterShows.getConnection(); 
+            Connection conn = Main.getConnection(); 
 
             if (!firstName.isEmpty()) {
                 query.append("FIRST_NAME = ?, ");
@@ -158,7 +158,7 @@ public class StaffRecords {
         String query = "DELETE FROM staff WHERE STAFF_ID = ?";
 
         try {
-            Connection conn = TheaterShows.getConnection(); 
+            Connection conn = Main.getConnection(); 
             PreparedStatement pstmt = conn.prepareStatement(query);
             pstmt.setInt(1, staffId);
 
@@ -183,7 +183,7 @@ public class StaffRecords {
         String query = "SELECT * FROM staff WHERE POSITION = ?";
 
         try {
-            Connection conn = TheaterShows.getConnection(); 
+            Connection conn = Main.getConnection(); 
             PreparedStatement pstmt = conn.prepareStatement(query);
             pstmt.setString(1, position);
             ResultSet rs = pstmt.executeQuery();
@@ -213,7 +213,7 @@ public class StaffRecords {
         String query = "SELECT * FROM staff WHERE SHIFT = ?";
 
         try {
-            Connection conn = TheaterShows.getConnection(); 
+            Connection conn = Main.getConnection(); 
             PreparedStatement pstmt = conn.prepareStatement(query);
             pstmt.setString(1, shift);
             ResultSet rs = pstmt.executeQuery();
@@ -239,7 +239,7 @@ public class StaffRecords {
         String query = "SELECT STAFF_ID, FIRST_NAME, LAST_NAME, POSITION, SALARY FROM staff ORDER BY SALARY DESC";
 
         try {
-            Connection conn = TheaterShows.getConnection(); 
+            Connection conn = Main.getConnection(); 
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(query);
 
@@ -266,7 +266,7 @@ public class StaffRecords {
         String query = "SELECT * FROM staff";
 
         try {
-            Connection conn = TheaterShows.getConnection(); 
+            Connection conn = Main.getConnection(); 
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(query);
 
@@ -285,7 +285,7 @@ public class StaffRecords {
         String query = "SELECT * FROM staff WHERE STATUS = 'Active'";
 
         try {
-            Connection conn = TheaterShows.getConnection(); 
+            Connection conn = Main.getConnection(); 
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(query);
 
@@ -312,7 +312,7 @@ public class StaffRecords {
                 "WHERE s.STAFF_ID = ?";
 
         try {
-            Connection conn = TheaterShows.getConnection(); 
+            Connection conn = Main.getConnection(); 
             PreparedStatement pstmt = conn.prepareStatement(query);
             pstmt.setInt(1, staffId);
             ResultSet rs = pstmt.executeQuery();
@@ -354,7 +354,7 @@ public class StaffRecords {
                 "WHERE ss.SHOW_ID = ?";
 
         try {
-            Connection conn = TheaterShows.getConnection(); 
+            Connection conn = Main.getConnection(); 
             PreparedStatement pstmt = conn.prepareStatement(query);
             pstmt.setString(1, showId);
             ResultSet rs = pstmt.executeQuery();
