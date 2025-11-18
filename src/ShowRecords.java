@@ -10,7 +10,7 @@ public class ShowRecords {
         String query = "INSERT INTO shows (title, runtime, show_price, status) "
                 + "VALUES (?, ?, ?, ?)";
 
-        try (Connection conn = TheaterShows.getConnection();
+        try (Connection conn = Main.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
 
             pstmt.setString(1, title);
@@ -48,7 +48,7 @@ public class ShowRecords {
     private static Show getShowById(String showId) {
         String query = "SELECT * FROM shows WHERE show_id = ?";
 
-        try (Connection conn = TheaterShows.getConnection();
+        try (Connection conn = Main.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
 
             pstmt.setString(1, showId);
@@ -76,7 +76,7 @@ public class ShowRecords {
         String query = "UPDATE shows SET title = ?, runtime = ?, "
                 + "show_price = ?, status = ? WHERE show_id = ?";
 
-        try (Connection conn = TheaterShows.getConnection();
+        try (Connection conn = Main.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
 
             pstmt.setString(1, newTitle);
@@ -145,7 +145,7 @@ public class ShowRecords {
         String query = "DELETE FROM shows WHERE show_id = ?";
 
         try {
-            Connection conn = TheaterShows.getConnection();
+            Connection conn = Main.getConnection();
             PreparedStatement pstmt = conn.prepareStatement(query);
             pstmt.setString(1, showId);
 
@@ -178,7 +178,7 @@ public class ShowRecords {
         String query = "SELECT * FROM shows";
 
         try {
-            Connection conn = TheaterShows.getConnection();
+            Connection conn = Main.getConnection();
             PreparedStatement pstmt = conn.prepareStatement(query);
             ResultSet rs = pstmt.executeQuery();
 
@@ -199,7 +199,7 @@ public class ShowRecords {
         String showId = scan.nextLine();
 
         try {
-            Connection conn = TheaterShows.getConnection();
+            Connection conn = Main.getConnection();
             PreparedStatement pstmt = conn.prepareStatement(query);
             pstmt.setString(1,showId);
             ResultSet rs = pstmt.executeQuery();
@@ -222,7 +222,7 @@ public class ShowRecords {
         String query = "SELECT * FROM shows WHERE status like 'UPCOMING'";
 
         try{
-            Connection conn = TheaterShows.getConnection();
+            Connection conn = Main.getConnection();
             PreparedStatement pstmt = conn.prepareStatement(query);
             ResultSet rs = pstmt.executeQuery();
 
