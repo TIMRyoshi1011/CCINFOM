@@ -270,11 +270,7 @@ VALUES
 ('Adrian', 'Delgado', 'Stage Coordinator', 'ACTIVE', 35000),
 ('Sophia', 'Rivera', 'Props/Set Designer', 'ACTIVE', 33000),
 ('Nathan', 'Gutierrez', 'Costume/Wardrobe Staff', 'ACTIVE', 30000),
-('Olivia', 'Kim', 'Sound Assistant', 'ACTIVE', 28000);
-
--- Added 4 inactive staff members
-INSERT INTO staff (FIRST_NAME, LAST_NAME, POSITION, EMPLOYMENT_STATUS, SALARY)
-VALUES
+('Olivia', 'Kim', 'Sound Assistant', 'ACTIVE', 28000),
 ('Carlos', 'Mendoza', 'Stagehand', 'INACTIVE', 18000),
 ('Lina', 'Garcia', 'Backstage Assistant', 'INACTIVE', 19000),
 ('Ethan', 'Lopez', 'Wardrobe Assistant', 'INACTIVE', 20000),
