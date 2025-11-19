@@ -413,7 +413,7 @@ public class TheaterRecords {
 
     }
 
-    public static void theaterMenu(Scanner sc) {
+    public static void TheaterMenu(Scanner sc) {
         int option = 0;
 
         do { 
