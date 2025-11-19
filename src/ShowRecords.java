@@ -45,7 +45,7 @@ public class ShowRecords {
         addShowToDB(title, runtime, price, status);
     }
 
-    private static Show getShowById(String showId) {
+    public static Show getShowById(String showId) {
         String query = "SELECT * FROM shows WHERE show_id = ?";
 
         try (Connection conn = Main.getConnection();
@@ -236,6 +236,31 @@ public class ShowRecords {
 
             if(!found){
                 System.out.println("No Upcoming Shows.");
+            }
+
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    public static void viewOngoingShows(){
+
+        String query = "SELECT * FROM shows WHERE status like 'ONGOING'";
+
+        try{
+            Connection conn = Main.getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(query);
+            ResultSet rs = pstmt.executeQuery();
+
+            boolean found = false;
+            System.out.println("------- Ongoing Shows---------");
+            while (rs.next()){
+                found = true;
+                displayShowRecord(rs);
+            }
+
+            if(!found){
+                System.out.println("No Ongoing Shows.");
             }
 
         } catch (SQLException e){

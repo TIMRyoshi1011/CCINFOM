@@ -5,8 +5,7 @@ public class Theater {
     private Integer capacity, max_Rows, max_Cols;
     private String theater_Status;
 
-    public Theater(String theater_ID, String theater_Name, Integer capacity, Integer max_Rows, Integer max_Cols, String theater_Status) {
-        this.theater_ID = theater_ID;
+    public Theater(String theater_Name, Integer capacity, Integer max_Rows, Integer max_Cols, String theater_Status) {
         this.theater_Name = theater_Name;
         this.capacity = capacity;
         this.max_Rows = max_Rows;
