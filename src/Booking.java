@@ -343,4 +343,102 @@ public class Booking {
             e.printStackTrace();
         }
     }
+
+    private static void listAllPendingBookings(String customerId){
+        String query = "SELECT booking_id, theater_show_id, nooftickets, total_price, booking_status " +
+                "FROM booking " +
+                "WHERE customer_id = ? AND booking_status = 'PENDING'";
+        try {
+            Connection conn = Main.getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(query);
+            pstmt.setString(1, customerId);
+            ResultSet rs = pstmt.executeQuery();
+
+            boolean found = false;
+            System.out.println("\nPending Bookings for Customer " + customerId + ":");
+            System.out.println("Booking ID | Show ID | Tickets | Total Price | Status");
+            while (rs.next()) {
+                found = true;
+                System.out.printf("%s | %s | %d | P%d | %s\n",
+                        rs.getString("booking_id"),
+                        rs.getString("theater_show_id"),
+                        rs.getInt("nooftickets"),
+                        rs.getInt("total_price"),
+                        rs.getString("booking_status"));
+            }
+
+            if (!found) {
+                System.out.println("No pending bookings found.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static int getPrice(String bookingId){
+        int totalPrice = 0;
+        try {
+            Connection conn = Main.getConnection();
+            String query = "SELECT total_price FROM booking WHERE booking_id = ? AND booking_status = 'PENDING'";
+            PreparedStatement pstmt = conn.prepareStatement(query);
+            pstmt.setString(1, bookingId);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                totalPrice = rs.getInt("total_price");
+            } else {
+                System.out.println("Invalid booking ID or booking is not pending.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return totalPrice;
+    }
+
+    private static void confirmBooking(String bookingId){
+        try {
+            Connection conn = Main.getConnection();
+            String updateQuery = "UPDATE booking SET booking_status = 'CONFIRMED', booking_date = ? WHERE booking_id = ?";
+            PreparedStatement pstmt = conn.prepareStatement(updateQuery);
+            pstmt.setDate(1, java.sql.Date.valueOf(java.time.LocalDate.now()));
+            pstmt.setString(2, bookingId);
+
+            int rows = pstmt.executeUpdate();
+            if (rows > 0) {
+                System.out.println("Payment successful! Booking is now CONFIRMED.");
+            } else {
+                System.out.println("Failed to update booking.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void pay(Scanner scan){
+
+        int amountPaid = 0;
+
+        Main.header("Payment");
+        System.out.print("Enter Customer ID: ");
+        String customerId = scan.nextLine().toUpperCase().trim();
+
+        listAllPendingBookings(customerId);
+
+        System.out.println("Select Booking To Pay (Enter Booking ID): ");
+        String bookingId = scan.nextLine().toUpperCase().trim();
+
+        int totalPrice = getPrice(bookingId);
+
+        do {
+            System.out.print("Enter Amount Paid: ");
+            amountPaid = Integer.parseInt(scan.nextLine());
+
+            if (amountPaid < totalPrice) {
+                System.out.println("Insufficient amount.");
+            }
+        } while (amountPaid < totalPrice);
+
+        confirmBooking(bookingId);
+
+    }
 }
