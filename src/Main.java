@@ -27,7 +27,7 @@ public class Main {
 
     private static final String URL = "jdbc:mysql://localhost:3306/theatershows";
     private static final String USER = "root";
-    private static final String PASSWORD = "Anielajae2_"; // <----- enter your password in mysql
+    private static final String PASSWORD = ""; // <----- enter your password in mysql
 
     private static Connection conn = null;
 
@@ -139,7 +139,7 @@ public class Main {
                 default:
                     System.out.print("\nInvalid option. Please try again: ");
             }
-        } while (select != 0);
+        } while (select > 4 || select < 0);
     }
 
     // --------------------------Transactions------------------------------
@@ -162,7 +162,7 @@ public class Main {
                     Booking.bookShowTickets(scan);
                     break;
                 case 2:
-                    System.out.println("\nCancelling Bookings\n");
+                    Booking.cancelBooking(scan);
                     break;
                 case 3:
                     StaffAssignment.assignStaff(scan);
@@ -178,7 +178,7 @@ public class Main {
                 default:
                     System.out.print("\nInvalid option. Please try again: ");
             }
-        } while (select > 4 || select < 0);
+        } while (select > 5 || select < 0);
     }
 
     // --------------------------Reports to be Generated------------------------------
