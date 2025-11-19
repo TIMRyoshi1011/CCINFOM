@@ -17,11 +17,10 @@ public class StaffAssignment {
             conn = Main.getConnection();
 
             Main.header("Scheduled Theater Shows");
-            String showQuery = "SELECT ts.THEATER_SHOW_ID, s.TITLE, ts.START_TIME, ts.END_TIME, tr.RESERVED_DATE "
+            String showQuery = "SELECT ts.THEATER_SHOW_ID, s.TITLE, ts.START_TIME, ts.END_TIME, ts.RESERVATION_DATE "
                     + "FROM theater_shows ts "
                     + "JOIN shows s ON ts.SHOW_ID = s.SHOW_ID "
-                    + "JOIN theater_reservation tr ON ts.THEATER_RESERVATION_ID = tr.THEATER_RESERVATION_ID "
-                    + "WHERE ts.SHOW_STATUS = 'SCHEDULED' ORDER BY tr.RESERVED_DATE, ts.START_TIME";
+                    + "WHERE ts.SHOW_STATUS = 'SCHEDULED' ORDER BY ts.RESERVATION_DATE, ts.START_TIME";
 
             try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(showQuery)) {
                 if (!rs.next()) {
@@ -34,16 +33,12 @@ public class StaffAssignment {
                     String title = rs.getString("TITLE");
                     String startTime = rs.getString("START_TIME");
                     String endTime = rs.getString("END_TIME");
-                    String reservedDate = rs.getString("RESERVED_DATE");
-
-                    // Ensure printed lines never exceed 55 chars: ID field (12) + space + content
-                    // (42)
+                    String reservedDate = rs.getString("RESERVATION_DATE");
                     String displayStart = (startTime != null && startTime.length() >= 5) ? startTime.substring(0, 5)
                             : (startTime == null ? "" : startTime);
                     String displayEnd = (endTime != null && endTime.length() >= 5) ? endTime.substring(0, 5)
                             : (endTime == null ? "" : endTime);
 
-                    // Print show title as-is (no wrapping/truncation)
                     System.out.printf("%-12s %s%n", showId, title);
                     System.out.printf("             %s %s - %s%n", reservedDate, displayStart, displayEnd);
                     Main.subheader();
@@ -114,10 +109,6 @@ public class StaffAssignment {
             System.out.println(); 
             String successMessage = "Staff assignment completed successfully!";
             String assignmentMessage = "ST" + staffId + " assigned to " + theaterShowId;
-
-            if (assignmentMessage.length() > 51) {
-                assignmentMessage = assignmentMessage.substring(0, 48) + "...";
-            }
 
             int boxWidth = 50;
             int paddingSuccess = (boxWidth - successMessage.length() - 2) / 2;

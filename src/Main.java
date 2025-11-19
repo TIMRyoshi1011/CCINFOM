@@ -26,7 +26,7 @@ public class Main {
 
     private static final String URL = "jdbc:mysql://localhost:3306/theatershows";
     private static final String USER = "root";
-    private static final String PASSWORD = "TheMarcHunter#1011"; // <----- enter your password in mysql
+    private static final String PASSWORD = ""; // <----- enter your password in mysql
 
     private static Connection conn = null;
 
@@ -90,7 +90,7 @@ public class Main {
     public static void connectToDB() {
         try {
             conn = DriverManager.getConnection(URL, USER, PASSWORD);
-            System.out.println("Connected to database.\n");
+            header("SUCCESSFULLY CONNECTED TO DATABASE");
 
         } catch (SQLException e) {
             System.out.println("Error connecting to DB: " + e.getMessage());
@@ -201,13 +201,13 @@ public class Main {
 
             switch (select) {
                 case 1:
-                    System.out.println("\nBooking Status Report\n");
+                    BookingReports.bookingStatusReport(scan);
                     break;
                 case 2:
                     TheaterPerformanceReport.generateReport(scan);
                     break;
                 case 3:
-                    System.out.println("\nFinancial Performance Report\n");
+                    FinancialPerformanceReport.generateReport(scan);
                     break;
                 case 4:
                     StaffAssignmentReport.generateReport(scan);
@@ -240,6 +240,7 @@ public class Main {
         connectToDB(); // Step 2: Connect to the database
         
         while (option != 0) {
+            Main.header("MAIN MENU");
             System.out.println("1 - Manage Records");
             System.out.println("2 - Make a Transaction");
             System.out.println("3 - Generate Reports");

@@ -279,7 +279,6 @@ public class ShowRecords {
             System.out.println("4. View All Shows");
             System.out.println("5. View Show Details");
             System.out.println("6. List All Upcoming Shows");
-            System.out.println("7. View Show Details With Seat Availability");
             System.out.println("0. Back to Main Menu");
             System.out.println("Choose an option: ");
             option = Integer.parseInt(scan.nextLine());
@@ -302,9 +301,6 @@ public class ShowRecords {
                     break;
                 case 6:
                     viewUpcomingShows();
-                    break;
-                case 7:
-
                     break;
                 case 0:
                     System.out.println("Returning to main menu...");
