@@ -202,7 +202,7 @@ public class Main {
                     TheaterPerformanceReport.generateReport(scan);
                     break;
                 case 3:
-                    System.out.println("\nFinancial Performance Report\n");
+                    FinancialPerformanceReport.generateReport(scan);
                     break;
                 case 4:
                     StaffAssignmentReport.generateReport(scan);
