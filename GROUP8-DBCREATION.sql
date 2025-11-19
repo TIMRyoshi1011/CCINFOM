@@ -272,6 +272,14 @@ VALUES
 ('Nathan', 'Gutierrez', 'Costume/Wardrobe Staff', 'ACTIVE', 30000),
 ('Olivia', 'Kim', 'Sound Assistant', 'ACTIVE', 28000);
 
+-- Added 4 inactive staff members
+INSERT INTO staff (FIRST_NAME, LAST_NAME, POSITION, EMPLOYMENT_STATUS, SALARY)
+VALUES
+('Carlos', 'Mendoza', 'Stagehand', 'INACTIVE', 18000),
+('Lina', 'Garcia', 'Backstage Assistant', 'INACTIVE', 19000),
+('Ethan', 'Lopez', 'Wardrobe Assistant', 'INACTIVE', 20000),
+('Maya', 'Ortiz', 'Volunteer', 'INACTIVE', 0);
+
 INSERT INTO shows (TITLE, RUNTIME, SHOW_PRICE, STATUS)
 VALUES
 ('Hamilton', '2:55:00', 8500, 'ONGOING'),
