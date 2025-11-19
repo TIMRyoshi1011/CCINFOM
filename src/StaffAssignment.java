@@ -70,7 +70,7 @@ public class StaffAssignment {
                 try (ResultSet rs = ps.executeQuery()) {
                     if (!rs.next()) {
                         System.out
-                                .println("\nNo available staff for this show. All active staff are already assigned.");
+                                .println("\nNo available staff for this show. All active staff are already assigned.\n");
                         return;
                     }
 
@@ -78,7 +78,7 @@ public class StaffAssignment {
                         String staffIdVal = rs.getString("STAFF_ID");
                         String name = rs.getString("FIRST_NAME") + " " + rs.getString("LAST_NAME");
                         String position = rs.getString("POSITION");
-                        
+
                         System.out.printf("%-12s %s%n", staffIdVal, name);
                         System.out.printf("             %s%n", position);
                         Main.subheader();
@@ -111,9 +111,26 @@ public class StaffAssignment {
                 if (conn != null)
                     conn.setAutoCommit(true);
             }
+            System.out.println(); 
+            String successMessage = "Staff assignment completed successfully!";
+            String assignmentMessage = "ST" + staffId + " assigned to " + theaterShowId;
 
-            System.out.println("\nStaff assignment completed successfully!");
-            System.out.println("Staff ID " + staffId + " assigned to Theater Show ID " + theaterShowId);
+            if (assignmentMessage.length() > 51) {
+                assignmentMessage = assignmentMessage.substring(0, 48) + "...";
+            }
+
+            int boxWidth = 50;
+            int paddingSuccess = (boxWidth - successMessage.length() - 2) / 2;
+            int paddingAssignment = (boxWidth - assignmentMessage.length() - 2) / 2;
+
+            System.out.println("-".repeat(boxWidth));
+            System.out.println("| " + " ".repeat(paddingSuccess) + successMessage
+                    + " ".repeat(boxWidth - successMessage.length() - paddingSuccess - 3) + "|");
+            System.out.println("-".repeat(boxWidth));
+            System.out.println("| " + " ".repeat(paddingAssignment) + assignmentMessage
+                    + " ".repeat(boxWidth - assignmentMessage.length() - paddingAssignment - 3) + "|");
+            System.out.println("-".repeat(boxWidth));
+            System.out.println(); 
 
         } catch (SQLException e) {
             System.out.println("\nError: Unable to complete the staff assignment transaction: " + e.getMessage());
