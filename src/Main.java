@@ -1,5 +1,4 @@
 //import java.io.*;
-import java.awt.print.Book;
 import java.sql.*;
 import java.util.Scanner;
 
@@ -27,7 +26,7 @@ public class Main {
 
     private static final String URL = "jdbc:mysql://localhost:3306/theatershows";
     private static final String USER = "root";
-    private static final String PASSWORD = "Anielajae2_"; // <----- enter your password in mysql
+    private static final String PASSWORD = ""; // <----- enter your password in mysql
 
     private static Connection conn = null;
 
@@ -197,10 +196,10 @@ public class Main {
 
             switch (select) {
                 case 1:
-                    System.out.println("\nBooking Status Report\n");
+                    BookingReports.bookingStatusReport(scan);
                     break;
                 case 2:
-                    System.out.println("\nTheater Performance Report\n");
+                    TheaterPerformanceReport.generateReport(scan);
                     break;
                 case 3:
                     System.out.println("\nFinancial Performance Report\n");
