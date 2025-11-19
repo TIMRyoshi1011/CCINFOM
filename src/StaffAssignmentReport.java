@@ -145,7 +145,7 @@ public class StaffAssignmentReport {
             Main.subheader();
 
             // Print header
-            System.out.printf("%-12s %-20s %6s   %8s%n",
+            System.out.printf("%-12s %-20s %6s   %6s%n",
                     "Staff ID", "Name", "Shows", "Hours");
             Main.subheader();
 
@@ -164,7 +164,7 @@ public class StaffAssignmentReport {
                 int shows = rs.getInt("total_shows");
                 int hours = rs.getInt("total_hours");
 
-                System.out.printf("%-12s %-20s %6d   %8d%n",
+                System.out.printf("%-12s %-20s %6d   %6d%n",
                         staffId, name, shows, hours);
 
                 totalStaff++;
@@ -177,7 +177,7 @@ public class StaffAssignmentReport {
             }
 
             Main.subheader();
-            System.out.printf("%-12s %-20s %6s   %8s%n",
+            System.out.printf("%-12s %-20s %6s   %6s%n",
                     "TOTAL", totalStaff + " staff", totalShows, totalHours);
             Main.subheader();
         } catch (SQLException e) {
