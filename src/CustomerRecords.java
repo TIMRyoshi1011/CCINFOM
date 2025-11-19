@@ -293,31 +293,31 @@ public class CustomerRecords {
             switch (option) {
                 case 1:
                     enterCustomerDetails(scan);
-                    next(scan);
+                    Main.next(scan);
                     break;
                 case 2:
                     updateCustomerName(scan);
-                    next(scan);
+                    Main.next(scan);
                     break;
                 case 3:
                     deleteCustomer(scan);
-                    next(scan);
+                    Main.next(scan);
                     break;
                 case 4:
                     viewCustomerByLName();
-                    next(scan);
+                    Main.next(scan);
                     break;
                 case 5:
                     listAllCustomerNames();
-                    next(scan);
+                    Main.next(scan);
                     break;
                 case 6:
                     listAllCustomers();
-                    next(scan);
+                    Main.next(scan);
                     break;
                 case 7:
                     viewCustomerBooking();
-                    next(scan);
+                    Main.next(scan);
                     break;
                 case 0:
                     System.out.println("Returning to main menu...");
@@ -326,10 +326,5 @@ public class CustomerRecords {
                     System.out.println("Invalid option. Please try again.");
             }
         } while (option != 0);
-    }
-
-    public static void next(Scanner scan) {
-        System.out.println("\nPress Enter to proceed...");
-        scan.nextLine(); 
     }
 }

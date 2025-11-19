@@ -27,7 +27,7 @@ public class Main {
 
     private static final String URL = "jdbc:mysql://localhost:3306/theatershows";
     private static final String USER = "root";
-    private static final String PASSWORD = ""; // <----- enter your password in mysql
+    private static final String PASSWORD = "TheMarcHunter#1011"; // <----- enter your password in mysql
 
     private static Connection conn = null;
 
@@ -265,6 +265,11 @@ public class Main {
         }
 
         scan.close();
+    }
+    // Stopper of clear console
+    public static void next(Scanner scan) {
+        System.out.println("\nPress Enter to proceed...");
+        scan.nextLine(); 
     }
 
     public static void clearConsole() {
