@@ -290,9 +290,9 @@ public class TheaterRecords {
 
         String query = "SELECT sh.SHOW_ID, sh.TITLE, th.THEATER_NAME" +
                         "FROM theaters th" +
-                        "LEFT JOIN theater_shows ts ON ts.THEATER_ID = ts.THEATER_ID" +
+                        "LEFT JOIN theater_shows ts ON th.THEATER_ID = ts.THEATER_ID" +
                         "LEFT JOIN shows sh ON ts.SHOW_ID = sh.SHOW_ID" +
-                        "WHERE sh.SHOW_ID = ?";
+                        "WHERE sh.SHOW_ID = '?'";
 
         try {
             Connection conn = Main.getConnection();
