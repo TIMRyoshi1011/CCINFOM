@@ -15,7 +15,7 @@ public class StaffRecords {
         System.out.print("Enter Position: ");
         String position = scan.nextLine();
 
-        System.out.print("Enter Employment Status (Active/Inactive): ");
+        System.out.print("Enter Employment Status (ACTIVE/INACTIVE): ");
         String status = scan.nextLine();
 
         System.out.print("Enter Salary: ");
@@ -51,6 +51,21 @@ public class StaffRecords {
         System.out.println("");
         System.out.print("Enter Staff ID to update: ");
         String staffId = scan.nextLine();
+
+        // Check if Staff ID exists
+        String checkQuery = "SELECT 1 FROM staff WHERE STAFF_ID = ?";
+        try (Connection conn = Main.getConnection(); PreparedStatement checkStmt = conn.prepareStatement(checkQuery)) {
+            checkStmt.setString(1, staffId);
+            try (ResultSet rs = checkStmt.executeQuery()) {
+                if (!rs.next()) {
+                    System.out.println("\nError: Staff ID not found.");
+                    return; 
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("\nError checking Staff ID: " + e.getMessage());
+            return;
+        }
 
         System.out.print("Enter New First Name (or press Enter to skip): ");
         String firstName = scan.nextLine();
@@ -106,7 +121,7 @@ public class StaffRecords {
                 return;
             }
 
-            query.setLength(query.length() - 2); // Remove last comma and space
+            query.setLength(query.length() - 2);
             query.append(" WHERE STAFF_ID = ?");
 
             PreparedStatement pstmt = conn.prepareStatement(query.toString());
@@ -143,8 +158,22 @@ public class StaffRecords {
         System.out.print("Enter Staff ID to delete: ");
         String staffId = scan.nextLine();
 
-        String query = "DELETE FROM staff WHERE STAFF_ID = ?";
+        // Check if Staff ID exists
+        String checkQuery = "SELECT 1 FROM staff WHERE STAFF_ID = ?";
+        try (Connection conn = Main.getConnection(); PreparedStatement checkStmt = conn.prepareStatement(checkQuery)) {
+            checkStmt.setString(1, staffId);
+            try (ResultSet rs = checkStmt.executeQuery()) {
+                if (!rs.next()) {
+                    System.out.println("\nError: Staff ID not found.");
+                    return; // Exit the feature if Staff ID does not exist
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("\nError checking Staff ID: " + e.getMessage());
+            return;
+        }
 
+        String query = "DELETE FROM staff WHERE STAFF_ID = ?";
         try {
             Connection conn = Main.getConnection();
             PreparedStatement pstmt = conn.prepareStatement(query);
@@ -262,7 +291,7 @@ public class StaffRecords {
 
     // List all active staff members
     public static void listAllActiveStaff() {
-        String query = "SELECT * FROM staff WHERE EMPLOYMENT_STATUS = 'Active'";
+        String query = "SELECT * FROM staff WHERE EMPLOYMENT_STATUS = 'ACTIVE'";
 
         try {
             Connection conn = Main.getConnection();
@@ -284,6 +313,21 @@ public class StaffRecords {
         System.out.println("");
         System.out.print("Enter Staff ID: ");
         String staffId = scan.nextLine();
+
+        // Check if Staff ID exists
+        String checkQuery = "SELECT 1 FROM staff WHERE STAFF_ID = ?";
+        try (Connection conn = Main.getConnection(); PreparedStatement checkStmt = conn.prepareStatement(checkQuery)) {
+            checkStmt.setString(1, staffId);
+            try (ResultSet rs = checkStmt.executeQuery()) {
+                if (!rs.next()) {
+                    System.out.println("\nError: Staff ID not found.\n");
+                    return; // Exit the feature if Staff ID does not exist
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("\nError checking Staff ID: " + e.getMessage());
+            return;
+        }
 
         String query = "SELECT s.*, sh.TITLE as SHOW_TITLE, tr.THEATER_ID " +
                 "FROM staff s " +
@@ -317,7 +361,7 @@ public class StaffRecords {
             }
 
             if (!found) {
-                System.out.println("Staff ID not found.");
+                System.out.println("Staff ID not found.\n");
             }
 
         } catch (SQLException e) {
@@ -351,7 +395,7 @@ public class StaffRecords {
             }
 
             if (!found) {
-                System.out.println("No staff assigned to this show or show not found.");
+                System.out.println("No staff assigned to this show or show not found.\n");
             }
 
         } catch (SQLException e) {
