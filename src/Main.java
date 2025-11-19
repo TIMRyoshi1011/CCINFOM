@@ -1,5 +1,4 @@
 //import java.io.*;
-import java.awt.print.Book;
 import java.sql.*;
 import java.util.Scanner;
 
@@ -200,7 +199,7 @@ public class Main {
                     System.out.println("\nBooking Status Report\n");
                     break;
                 case 2:
-                    System.out.println("\nTheater Performance Report\n");
+                    TheaterPerformanceReport.generateReport(scan);
                     break;
                 case 3:
                     System.out.println("\nFinancial Performance Report\n");
