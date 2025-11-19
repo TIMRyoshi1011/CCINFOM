@@ -3,6 +3,67 @@ import java.util.Scanner;
 
 public class CustomerRecords {
 
+    public static void deleteCustomerProfile (Scanner scan) {
+        Main.header("DELETING CUSTOMER PROFILE");
+
+        System.out.println("Enter Customer ID to delete (e.g., CT000001): ");
+        String customerID = scan.nextLine().trim();
+
+        //Delete from seat_booking
+        String query = "DELETE FROM seat_booking\n" +
+                        "WHERE BOOKING_ID IN (\n" + 
+                        "SELECT BOOKING_ID FROM BOOKING\n" +
+                        "WHERE CUSTOMER_ID = ?\n" + 
+                        ");";
+
+        //Delete from booking
+        String query2 = "DELETE FROM booking" +
+                        " WHERE CUSTOMER_ID = ?;";
+
+        //Delete from customers
+        String query3 = "DELETE FROM customers\n" +
+                        "WHERE CUSTOMER_ID = ?;";
+
+        try (Connection conn = Main.getConnection()) {
+            
+            try (PreparedStatement pstmt1 = conn.prepareStatement(query)) {
+                pstmt1.setString(1, customerID);
+
+                int rowsAffected = pstmt1.executeUpdate();
+                if (rowsAffected > 0) {
+                    System.out.println("Seat Booking for " + customerID + " is deleted.");
+                } else {
+                    System.out.println("No seat booking record for " + customerID);
+                }
+            }
+
+            try (PreparedStatement pstmt2 = conn.prepareStatement(query2)) {
+                pstmt2.setString(1, customerID);
+
+                int rowsAffected = pstmt2.executeUpdate();
+                if (rowsAffected > 0) {
+                    System.out.println("Booking for " + customerID + " is deleted.");
+                } else {
+                    System.out.println("No booking record for " + customerID);
+                }
+            } 
+        
+            try (PreparedStatement pstmt3 = conn.prepareStatement(query3)) {
+                pstmt3.setString(1, customerID);
+
+                int rowsAffected = pstmt3.executeUpdate();
+                if (rowsAffected > 0) {
+                    System.out.println("Customer Record for " + customerID + " is deleted.");
+                } else {
+                    System.out.println("No customer record for " + customerID);
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void enterCustomerDetails(Scanner scan) {
         System.out.println("");
         System.out.print("Enter your First Name: ");
