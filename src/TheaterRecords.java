@@ -374,8 +374,9 @@ public class TheaterRecords {
             System.out.println("2. Update Theater Details");
             System.out.println("3. Delete Theater Record");
             System.out.println("4. View Theater Record by Status");
-            System.out.println("5. List All Theaters");
-            System.out.println("6. View Theater Used by Show");
+            System.out.println("5. List All Active Theaters");
+            System.out.println("6. List All Theaters");
+            System.out.println("7. View Theater Used by Show");
             System.out.println("0. Returning to main menu...");
             System.out.print("Enter Choice: ");
             option = Integer.parseInt(sc.nextLine());
@@ -394,9 +395,12 @@ public class TheaterRecords {
                     viewTheaterRecordByStatus(sc); //not working
                     break;
                 case 5:
-                    listAllTheaters();
+                    listAllActiveTheaters();
                     break;
                 case 6:
+                    listAllTheaters();
+                    break;
+                case 7:
                     viewTheaterUsedByShow(sc);
                     break;
                 default:
