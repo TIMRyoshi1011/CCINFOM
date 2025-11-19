@@ -270,11 +270,7 @@ VALUES
 ('Adrian', 'Delgado', 'Stage Coordinator', 'ACTIVE', 35000),
 ('Sophia', 'Rivera', 'Props/Set Designer', 'ACTIVE', 33000),
 ('Nathan', 'Gutierrez', 'Costume/Wardrobe Staff', 'ACTIVE', 30000),
-('Olivia', 'Kim', 'Sound Assistant', 'ACTIVE', 28000);
-
--- Added 4 inactive staff members
-INSERT INTO staff (FIRST_NAME, LAST_NAME, POSITION, EMPLOYMENT_STATUS, SALARY)
-VALUES
+('Olivia', 'Kim', 'Sound Assistant', 'ACTIVE', 28000),
 ('Carlos', 'Mendoza', 'Stagehand', 'INACTIVE', 18000),
 ('Lina', 'Garcia', 'Backstage Assistant', 'INACTIVE', 19000),
 ('Ethan', 'Lopez', 'Wardrobe Assistant', 'INACTIVE', 20000),
@@ -559,12 +555,28 @@ VALUES
 INSERT INTO staff_assignment (STAFF_ID, THEATER_SHOW_ID)
 VALUES
 ('ST000001', 'TS000001'),
+('ST000001', 'TS000002'),
 ('ST000002', 'TS000002'),
+('ST000002', 'TS000003'),
 ('ST000003', 'TS000003'),
+('ST000003', 'TS000006'),
 ('ST000004', 'TS000004'),
+('ST000004', 'TS000007'),
 ('ST000005', 'TS000005'),
+('ST000005', 'TS000010'),
 ('ST000006', 'TS000006'),
+('ST000006', 'TS000001'),
 ('ST000007', 'TS000007'),
+('ST000007', 'TS000003'),
 ('ST000008', 'TS000008'),
+('ST000008', 'TS000009'),
 ('ST000009', 'TS000009'),
-('ST000010', 'TS000010');
+('ST000009', 'TS000010'),
+('ST000010', 'TS000010'),
+('ST000010', 'TS000008'),
+('ST000011', 'TS000002'),
+('ST000011', 'TS000005'),
+('ST000012', 'TS000004'),
+('ST000012', 'TS000006'),
+('ST000013', 'TS000005'),
+('ST000014', 'TS000001');
