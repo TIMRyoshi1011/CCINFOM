@@ -237,36 +237,42 @@ public class Main {
             conn = DriverManager.getConnection(url, USER, PASSWORD);
             clearConsole();
 
-            connectToDB(); // Step 2: Connect to the database
+            // check if database is already created:
+            try {
+                conn = DriverManager.getConnection(URL, USER, PASSWORD); // Create a
+                connectToDB(); // Step 2: Connect to the database
 
-            do {
-                System.out.println("1 - Manage Records");
-                System.out.println("2 - Make a Transaction");
-                System.out.println("3 - Generate Reports");
-                System.out.println("0 - Exit");
-                System.out.print("\nChoose an option: ");
-                option = Integer.parseInt(scan.nextLine());
+                do {
+                    System.out.println("1 - Manage Records");
+                    System.out.println("2 - Make a Transaction");
+                    System.out.println("3 - Generate Reports");
+                    System.out.println("0 - Exit");
+                    System.out.print("\nChoose an option: ");
+                    option = Integer.parseInt(scan.nextLine());
 
-                switch (option) { 
-                    case 1:
-                        manageRecords();
-                        clearConsole();
-                        break;
-                    case 2:
-                        makeTransaction();
-                        clearConsole();
-                        break;
-                    case 3:
-                        generateReports();
-                        clearConsole();
-                        break;
-                    case 0:
-                        System.out.println("Thank You!");
-                        break;
-                    default:
-                        System.out.println("\nInvalid option. Please try again.\n");
-                }
-            } while (option != 0);
+                    switch (option) { 
+                        case 1:
+                            manageRecords();
+                            clearConsole();
+                            break;
+                        case 2:
+                            makeTransaction();
+                            clearConsole();
+                            break;
+                        case 3:
+                            generateReports();
+                            clearConsole();
+                            break;
+                        case 0:
+                            System.out.println("Thank You!");
+                            break;
+                        default:
+                            System.out.println("\nInvalid option. Please try again.\n");
+                    }
+                } while (option != 0);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
