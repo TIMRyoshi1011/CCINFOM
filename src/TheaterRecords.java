@@ -3,7 +3,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.LocalDate;
 import java.util.Scanner;
 
 public class TheaterRecords {
@@ -284,51 +283,6 @@ public class TheaterRecords {
         }
     }
 
-    //Theater Capacity + Reservation Status (Theater Reservation) 
-    public static void viewCapacityWithReservationStatus (Scanner scan) {
-        System.out.print("\n");
-        System.out.print("Enter Theater ID: ");
-        String theater_ID = scan.nextLine();
-
-        String query = "SELECT th.*, tr.RESERVED_DATE, tr.RESERVATION_STATUS" +
-                        "FROM theaters th" +
-                        "LEFT JOIN theater_reservation tr ON th.THEATER_ID = tr.THEATER_ID" +
-                        "WHERE th.THEATER_ID = ?";
-
-        try {
-            Connection conn = Main.getConnection();
-            PreparedStatement pstmt = conn.prepareStatement(query);
-            pstmt.setString(1, theater_ID);
-            ResultSet rs = pstmt.executeQuery();
-
-            System.out.println("\n-----------------------Theater Details with Reservation Status-----------------------");
-            boolean found = false;
-            while (rs.next()) {
-                if (!found) {
-                    found = true;
-                    displayTheaterRecord(rs);
-                }  
-
-                String theater_Name = rs.getString("THEATER_NAME");
-                if (theater_Name != null) {
-                    int capacity = rs.getInt("CAPACITY");
-                    String theater_Status = rs.getString("THEATER_STATUS");
-                    LocalDate reserved_Date = rs.getDate(5).toLocalDate();
-                    String reservation_Status = rs.getString("RESERVATION_STATUS");
-                    System.out.println("Theater Name: " + theater_Name + " | Capacity: " + capacity + " | Theater Status: " + theater_Status + 
-                                        " | Reserved Date: " + reserved_Date + " | Reservation Status: " + reservation_Status + " |");
-                }
-            }
-
-            if (!found) {
-                System.out.println("Theater ID not found.");
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
     //Theater to be used by a show
     public static void viewTheaterUsedByShow (Scanner scan) {
         System.out.print("\n");
@@ -337,8 +291,7 @@ public class TheaterRecords {
 
         String query = "SELECT sh.SHOW_ID, sh.TITLE, th.THEATER_NAME" +
                         "FROM theaters th" +
-                        "LEFT JOIN theater_reservation tr ON th.THEATER_ID = tr.THEATER_ID" + 
-                        "LEFT JOIN theater_shows ts ON tr.THEATER_RESERVATION_ID = ts.THEATER_RESERVATION_ID" +
+                        "LEFT JOIN theater_shows ts ON ts.THEATER_RESERVATION_ID = ts.THEATER_RESERVATION_ID" +
                         "LEFT JOIN shows sh ON ts.SHOW_ID = sh.SHOW_ID" +
                         "WHERE sh.SHOW_ID = ?";
 
@@ -424,8 +377,7 @@ public class TheaterRecords {
             System.out.println("4. View Theater Record by Status");
             System.out.println("5. List All Active Theaters");
             System.out.println("6. List All Theaters");
-            System.out.println("7. View Theater Capacity and Reservation Status");
-            System.out.println("8. View Theater Used by Show");
+            System.out.println("7. View Theater Used by Show");
             System.out.println("0. Returning to main menu...");
             System.out.print("Enter Choice: ");
             option = Integer.parseInt(sc.nextLine());
@@ -438,10 +390,8 @@ public class TheaterRecords {
                     updateTheaterRecord(sc);
                     break;
                 case 3:
-                    deleteTheaterRecord(sc);
                     break;
                 case 4:
-                    viewTheaterRecordByStatus(sc);
                     break;
                 case 5:
                     listAllActiveTheaters();
@@ -450,9 +400,6 @@ public class TheaterRecords {
                     listAllTheaters();
                     break;
                 case 7:
-                    viewCapacityWithReservationStatus(sc);
-                    break;
-                case 8:
                     viewTheaterUsedByShow(sc);
                     break;
                 default:
