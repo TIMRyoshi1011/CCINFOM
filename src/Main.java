@@ -150,6 +150,7 @@ public class Main {
         System.out.println("3 - Setting Staff Assignments");
         System.out.println("4 - Scheduling Shows");
         System.out.println("5 - Payments");
+        System.out.println("6 - Delete Customer Profile");
         System.out.println("0 - Exit");
         System.out.print("\nChoose an option: ");
 
@@ -171,6 +172,10 @@ public class Main {
                     break;
                 case 5:
                     Booking.pay(scan);
+                    break;
+                case 6:
+                    CustomerRecords.deleteCustomerProfile(scan);
+                    break;
                 case 0:
                     System.out.println("Returning to main menu...");
                     break;
