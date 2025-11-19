@@ -124,7 +124,7 @@ public class Main {
                     ShowRecords.ShowMenu(scan);
                     break;
                 case 2:
-                    System.out.println("\nEnter Add Theater Here\n");
+                    TheaterRecords.TheaterMenu(scan);
                     break;
                 case 3:
                     StaffRecords.staffMenu(scan);
