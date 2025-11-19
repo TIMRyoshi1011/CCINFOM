@@ -235,7 +235,7 @@ public class CustomerRecords {
     }
 
     public static void viewCustomerBooking() {
-        String query = "SELECT c.FIRST_NAME, c.LAST_NAME, b.NOOFTICKETS, " +
+        String query = "SELECT c.CUSTOMER_ID, c.FIRST_NAME, c.LAST_NAME, b.NOOFTICKETS, " +
                         "GROUP_CONCAT(CONCAT('Row: ', s.ROW_NO, ', Col: ', s.COL_NO) SEPARATOR ' | ') AS SEATS, " +
                         "sh.TITLE " +
                         "FROM booking b " +
@@ -254,12 +254,14 @@ public class CustomerRecords {
             System.out.println("\n-------------------All Customer Bookings--------------------");
 
             while (rs.next()) {
+                String cusId = rs.getString("CUSTOMER_ID");
                 String fName = rs.getString("FIRST_NAME");
                 String lName = rs.getString("LAST_NAME");
                 int noTickets = rs.getInt("NOOFTICKETS");
                 String seats = rs.getString("SEATS"); 
                 String title = rs.getString("TITLE");
 
+                System.out.println("Customer ID: " + cusId);
                 System.out.println("Name: " + fName + " " + lName);
                 System.out.println("Number of tickets: " + noTickets);
                 System.out.println("Seats: " + seats);
@@ -291,31 +293,31 @@ public class CustomerRecords {
             switch (option) {
                 case 1:
                     enterCustomerDetails(scan);
-                    next(scan);
+                    Main.next(scan);
                     break;
                 case 2:
                     updateCustomerName(scan);
-                    next(scan);
+                    Main.next(scan);
                     break;
                 case 3:
                     deleteCustomer(scan);
-                    next(scan);
+                    Main.next(scan);
                     break;
                 case 4:
                     viewCustomerByLName();
-                    next(scan);
+                    Main.next(scan);
                     break;
                 case 5:
                     listAllCustomerNames();
-                    next(scan);
+                    Main.next(scan);
                     break;
                 case 6:
                     listAllCustomers();
-                    next(scan);
+                    Main.next(scan);
                     break;
                 case 7:
                     viewCustomerBooking();
-                    next(scan);
+                    Main.next(scan);
                     break;
                 case 0:
                     System.out.println("Returning to main menu...");
@@ -324,10 +326,5 @@ public class CustomerRecords {
                     System.out.println("Invalid option. Please try again.");
             }
         } while (option != 0);
-    }
-
-    public static void next(Scanner scan) {
-        System.out.println("\nPress Enter to proceed...");
-        scan.nextLine(); 
     }
 }

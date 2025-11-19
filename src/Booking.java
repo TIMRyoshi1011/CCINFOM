@@ -54,7 +54,7 @@ public class Booking {
     private static void addTheaterShowToDB(String theaterId, String showId, LocalTime startTime,
                                            LocalTime endTime, LocalDate date, String status){
 
-        String query = "INSERT INTO shows (theater_id, show_id, start_time, end_time, res_date, show_status) " +
+        String query = "INSERT INTO shows (theater_id, show_id, start_time, end_time, reservation_date, show_status) " +
                         "VALUES (?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = Main.getConnection();
@@ -101,7 +101,7 @@ public class Booking {
     }
 
     private static void viewAllScheduledTheaterShows(){
-        String query = "SELECT t.theater_show_id, s.title, t.start_time, s.show_price, t.res_date " +
+        String query = "SELECT t.theater_show_id, s.title, t.start_time, s.show_price, t.reservation_date " +
                         "FROM theater_shows t JOIN shows s ON s.show_id = t.show_id " +
                         "WHERE show_status like 'SCHEDULED'";
 
@@ -132,7 +132,7 @@ public class Booking {
         String title = rs.getString("title");
         LocalTime startTime = LocalTime.parse(rs.getString("start_time"));
         int price = rs.getInt("show_price");
-        LocalDate date = LocalDate.parse(rs.getString("res_date"));
+        LocalDate date = LocalDate.parse(rs.getString("reservation_date"));
 
         System.out.println("Theater Show ID: " + tsID + " | Title: " + title);
         System.out.println("Price: P" + price + " | Start Time: " + startTime);
@@ -181,6 +181,7 @@ public class Booking {
 
         if (getCustomerByID(customerId) == null){
             System.out.print("Customer Not Found.");
+            Main.next(sc);
             return;
         }
 
@@ -441,4 +442,85 @@ public class Booking {
         confirmBooking(bookingId);
 
     }
+
+    public static void updateBooking(String bookingId) {
+        String sql = "UPDATE booking SET BOOKING_STATUS = 'REFUNDED' WHERE BOOKING_ID = ?";
+
+        try (Connection conn = Main.getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, bookingId);
+
+            int rowsUpdated = pstmt.executeUpdate();
+
+            if (rowsUpdated > 0) {
+                System.out.println("Payment is now Refunded!");
+            } else {
+                System.out.println("\nBooking ID not updated.");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void deleteSeatBooking(String bookingId) {
+        String sql = "DELETE FROM seat_booking WHERE BOOKING_ID = ?";
+
+        try (Connection conn = Main.getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, bookingId);
+
+            int rowsDeleted = pstmt.executeUpdate();
+
+            if (rowsDeleted > 0) {
+                System.out.println("\nSeats are now vacant!");
+            } else {
+                System.out.println("\nBooking ID not found.");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void getBookingId(String cusId) {
+        String booking_id = "";
+        String query = "SELECT BOOKING_ID FROM booking WHERE CUSTOMER_ID = ?";
+
+        try (Connection conn = Main.getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setString(1, cusId);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                booking_id = rs.getString("BOOKING_ID");
+                System.out.println("Cancelled Booking ID: " + booking_id);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        deleteSeatBooking(booking_id);
+        updateBooking(booking_id);
+    }
+
+    public static void cancelBooking(Scanner scan) {
+        Main.header("Cancel Bookings");
+        CustomerRecords.viewCustomerBooking();
+        System.out.print("\nEnter Customer Id To Cancel: ");
+        String customerId = scan.nextLine().trim().toUpperCase();
+
+        if (getCustomerByID(customerId) == null){
+            System.out.print("Customer Not Found.\n");
+            Main.next(scan);
+            return;
+        }
+
+        getBookingId(customerId);
+        Main.next(scan);
+    } 
 }
