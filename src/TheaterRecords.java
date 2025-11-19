@@ -390,8 +390,10 @@ public class TheaterRecords {
                     updateTheaterRecord(sc);
                     break;
                 case 3:
+                    deleteTheaterRecord(sc); //not working
                     break;
                 case 4:
+                    viewTheaterRecordByStatus(sc); //not working
                     break;
                 case 5:
                     listAllActiveTheaters();
