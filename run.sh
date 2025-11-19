@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Compile the Java file
-javac -cp lib/mysql-connector-j-9.5.0.jar src/*.java -d out
+javac -cp lib/mysql-connector-j-9.5.0.jar:src -d out src/*.java
 
 # Run the Java program
 java -cp "lib/mysql-connector-j-9.5.0.jar:out" Main

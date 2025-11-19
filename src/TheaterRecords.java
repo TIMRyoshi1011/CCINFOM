@@ -264,6 +264,24 @@ public class TheaterRecords {
         }
     }
 
+    // List all active theaters
+    public static void listAllActiveTheaters() {
+        String query = "SELECT * FROM theaters WHERE THEATER_STATUS = 'ACTIVE'";
+
+        try (Connection conn = Main.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+
+            System.out.println("\n-----------------------Active Theaters-----------------------");
+            while (rs.next()) {
+                displayTheaterRecord(rs);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     //Theater to be used by a show
     public static void viewTheaterUsedByShow (Scanner scan) {
         System.out.print("\n");

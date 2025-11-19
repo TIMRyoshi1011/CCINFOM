@@ -2,6 +2,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Scanner;
 
 public class FinancialPerformanceReport {
@@ -165,6 +166,29 @@ public class FinancialPerformanceReport {
             Main.subheader();
         } catch (SQLException e) {
             System.out.println("\nError generating report: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    // Generate financial performance report
+    public static void generateReport() {
+        String query = "SELECT SHOW_NAME, SUM(TICKET_PRICE) AS TOTAL_REVENUE FROM ticket_sales GROUP BY SHOW_NAME";
+
+        try (Connection conn = Main.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+
+            System.out.println("\n-------------------Financial Performance Report-------------------");
+            System.out.printf("%-30s %-15s\n", "Show Name", "Total Revenue");
+            System.out.println("---------------------------------------------------------------");
+
+            while (rs.next()) {
+                String showName = rs.getString("SHOW_NAME");
+                double totalRevenue = rs.getDouble("TOTAL_REVENUE");
+                System.out.printf("%-30s %-15.2f\n", showName, totalRevenue);
+            }
+
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
