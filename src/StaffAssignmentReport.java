@@ -89,7 +89,7 @@ public class StaffAssignmentReport {
                 "JOIN staff_assignment sa ON s.STAFF_ID = sa.STAFF_ID " +
                 "JOIN theater_shows ts ON sa.THEATER_SHOW_ID = ts.THEATER_SHOW_ID " +
                 "JOIN theaters th ON ts.THEATER_ID = th.THEATER_ID " + 
-                "WHERE YEAR(tr.RESERVED_DATE) = ? AND MONTH(tr.RESERVED_DATE) = ? " +
+                "WHERE YEAR(ts.RESERVATION_DATE) = ? AND MONTH(ts.RESERVATION_DATE) = ? " +
                 "GROUP BY s.STAFF_ID, s.FIRST_NAME, s.LAST_NAME " +
                 "ORDER BY total_hours DESC, total_shows DESC";
 
@@ -105,7 +105,7 @@ public class StaffAssignmentReport {
                 "JOIN staff_assignment sa ON s.STAFF_ID = sa.STAFF_ID " +
                 "JOIN theater_shows ts ON sa.THEATER_SHOW_ID = ts.THEATER_SHOW_ID " +
                 "JOIN theaters th ON ts.THEATER_ID = th.THEATER_ID " + 
-                "WHERE YEAR(tr.RESERVED_DATE) = ? AND QUARTER(tr.RESERVED_DATE) = ? " +
+                "WHERE YEAR(ts.RESERVATION_DATE) = ? AND QUARTER(ts.RESERVATION_DATE) = ? " +
                 "GROUP BY s.STAFF_ID, s.FIRST_NAME, s.LAST_NAME " +
                 "ORDER BY total_hours DESC, total_shows DESC";
 
@@ -121,7 +121,7 @@ public class StaffAssignmentReport {
                 "JOIN staff_assignment sa ON s.STAFF_ID = sa.STAFF_ID " +
                 "JOIN theater_shows ts ON sa.THEATER_SHOW_ID = ts.THEATER_SHOW_ID " +
                 "JOIN theaters th ON ts.THEATER_ID = th.THEATER_ID " + 
-                "WHERE YEAR(tr.RESERVED_DATE) = ? " +
+                "WHERE YEAR(ts.RESERVATION_DATE) = ? " +
                 "GROUP BY s.STAFF_ID, s.FIRST_NAME, s.LAST_NAME " +
                 "ORDER BY total_hours DESC, total_shows DESC";
 
