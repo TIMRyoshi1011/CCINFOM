@@ -26,7 +26,7 @@ public class Main {
 
     private static final String URL = "jdbc:mysql://localhost:3306/theatershows";
     private static final String USER = "root";
-    private static final String PASSWORD = ""; // <----- enter your password in mysql
+    private static String PASSWORD;
 
     private static Connection conn = null;
 
@@ -229,42 +229,47 @@ public class Main {
         // } catch (Exception e) {
         // System.out.println(e.getMessage());
         // }
+        System.out.print("Enter SQL password: ");       
+        PASSWORD = scan.nextLine();                    
+
         try {
-            conn = DriverManager.getConnection(URL, USER, PASSWORD); // Step 1: Check if database exists
-        } catch (SQLException e) {
-            option = 0;
-        }
+            String url = "jdbc:mysql://localhost:3306/?allowMultiQueries=true";
+            conn = DriverManager.getConnection(url, USER, PASSWORD);
+            clearConsole();
 
-        connectToDB(); // Step 2: Connect to the database
-        
-        while (option != 0) {
-            Main.header("MAIN MENU");
-            System.out.println("1 - Manage Records");
-            System.out.println("2 - Make a Transaction");
-            System.out.println("3 - Generate Reports");
-            System.out.println("0 - Exit");
-            System.out.print("\nChoose an option: ");
-            option = Integer.parseInt(scan.nextLine());
+            connectToDB(); // Step 2: Connect to the database
 
-            switch (option) {
-                case 1:
-                    manageRecords();
-                    clearConsole();
-                    break;
-                case 2:
-                    makeTransaction();
-                    clearConsole();
-                    break;
-                case 3:
-                    generateReports();
-                    clearConsole();
-                    break;
-                case 0:
-                    System.out.println("Thank You!");
-                    break;
-                default:
-                    System.out.println("\nInvalid option. Please try again.\n");
-            }
+            do {
+                System.out.println("1 - Manage Records");
+                System.out.println("2 - Make a Transaction");
+                System.out.println("3 - Generate Reports");
+                System.out.println("0 - Exit");
+                System.out.print("\nChoose an option: ");
+                option = Integer.parseInt(scan.nextLine());
+
+                switch (option) { 
+                    case 1:
+                        manageRecords();
+                        clearConsole();
+                        break;
+                    case 2:
+                        makeTransaction();
+                        clearConsole();
+                        break;
+                    case 3:
+                        generateReports();
+                        clearConsole();
+                        break;
+                    case 0:
+                        System.out.println("Thank You!");
+                        break;
+                    default:
+                        System.out.println("\nInvalid option. Please try again.\n");
+                }
+            } while (option != 0);
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
 
         scan.close();
