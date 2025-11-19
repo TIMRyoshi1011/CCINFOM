@@ -140,7 +140,7 @@ public class TheaterPerformanceReport {
             ResultSet rs = pstmt.executeQuery();
 
             System.out.print("\n");
-            Main.subheader;
+            Main.subheader();
             System.out.println(centerText("Theater Performance Report - " + period, width));
             Main.subheader();
 
