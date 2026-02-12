@@ -6,7 +6,7 @@ package model;
 
 /**
  *
- * @author Marcus
+ * @author ToIuMonoRyōshi
  */
 public class Staff {
     private String staffId;
@@ -90,3 +90,4 @@ public class Staff {
         //Main.subheader();
     }
 }
+
