@@ -6,7 +6,7 @@ package model;
 
 /**
  *
- * @author Marcus
+ * @author ToIuMonoRyōshi
  */
 public class Customer {
     private String customerId;
@@ -71,3 +71,4 @@ public class Customer {
         System.out.println("________________________________");
     }
 }
+
