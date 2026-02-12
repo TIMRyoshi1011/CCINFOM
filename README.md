@@ -1,4 +1,4 @@
-# CCINFOM-Database-Application-Project
+# CCINFOM Database Application Project
 Compile: javac -cp lib/mysql-connector-j-9.5.0.jar src/*.java -d out
 
 Run: java -cp "lib/mysql-connector-j-9.5.0.jar;out" Main
