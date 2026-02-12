@@ -7,7 +7,7 @@ package dao;
 import java.sql.*;
 /**
  *
- * @author Marcus
+ * @author ToIuMonoRyōshi
  */
 public class SQLConnect {
     private static final String URL = "jdbc:mysql://localhost:3306/theatershows";
@@ -28,3 +28,4 @@ public class SQLConnect {
         PASSWORD = password;
     }
 }
+
