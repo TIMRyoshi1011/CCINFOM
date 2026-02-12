@@ -6,7 +6,7 @@ package model;
 
 /**
  *
- * @author Marcus
+ * @author ToIuMonoRyōshi
  */
 public class Theater {
     private String theater_ID;
@@ -70,3 +70,4 @@ public class Theater {
         this.theater_Status = theater_Status;
     }
 }
+
