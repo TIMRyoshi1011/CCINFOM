@@ -8,7 +8,7 @@ import java.time.LocalTime;
 
 /**
  *
- * @author Marcus
+ * @author ToIuMonoRyōshi
  */
 public class Show {
     private String showId;
@@ -46,3 +46,4 @@ public class Show {
         System.out.println("________________________________");
     }
 }
+
