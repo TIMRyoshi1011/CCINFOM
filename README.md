@@ -5,7 +5,7 @@ Github repository for Final Project in CCINFOM Course from CCS in DLSU from Term
 - The Layout of This Program is Made in Apache NetBeans
 
 Compile: dir /s /b src\*.java > sources.txt
-javac -cp lib\mysql-connector-j-9.5.0.jar -d out @sources.txt
+- javac -cp lib\mysql-connector-j-9.5.0.jar -d out @sources.txt
 
 Run: java -cp out;lib\mysql-connector-j-9.5.0.jar com.App
 
