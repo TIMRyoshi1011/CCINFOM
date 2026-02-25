@@ -2,6 +2,9 @@ package com.Transactions;
 
 import java.sql.*;
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+
+import com.App;
 import java.awt.*;
 
 public class StaffAssignment {
@@ -197,22 +200,49 @@ public class StaffAssignment {
     }
 
     private static void connectTable(String query) {
-        try (
+        try {
             Connection conn = dao.SQLConnect.getConnection();
             Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(query)
-        ) {
-            TableDisplay frame = new TableDisplay();
-            frame.displayResultSet(rs);
-            frame.setVisible(true);
+            ResultSet rs = stmt.executeQuery(query);
 
-        } catch (Exception e) {
+            // Get metadata for column names
+            ResultSetMetaData rsmd = rs.getMetaData();
+            int columnCount = rsmd.getColumnCount();
+            String[] columnNames = new String[columnCount];
+            for (int i = 1; i <= columnCount; i++) {
+                columnNames[i - 1] = rsmd.getColumnName(i);
+            }
+
+            // Read rows into DefaultTableModel
+            DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
+                @Override
+                public boolean isCellEditable(int row, int column) {
+                    return false;
+                }
+            };
+        
+            while (rs.next()) {
+                Object[] rowData = new Object[columnCount];
+                for (int i = 1; i <= columnCount; i++) {
+                    rowData[i - 1] = rs.getObject(i);
+                }
+                model.addRow(rowData);
+            }
+
+            // Display in JTable
+            JTable table = new JTable(model);
+            JScrollPane scrollPane = new JScrollPane(table);
+
+            App.addTable(scrollPane);
+
+            rs.close();
+            stmt.close();
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     private static void connectTableifUnknown(String query, String missing, Integer missing2) {
-
         try (
             Connection conn = dao.SQLConnect.getConnection();
             PreparedStatement pstmt = conn.prepareStatement(query)
@@ -221,22 +251,46 @@ public class StaffAssignment {
             if (missing2 != null) {
                 pstmt.setInt(2, missing2);
             }
-            boolean hasData = false;
+
             try (ResultSet rs = pstmt.executeQuery()) {
 
-                if (rs.next()) {
-                    hasData = true;
-                }
-
-                if (hasData) {
-                    TableDisplay frame = new TableDisplay();
-                    frame.displayResultSet(rs);
-                    frame.setTitle("Result");
-                    frame.setVisible(true);
-                }
-
-                else 
+                // Check if ResultSet has data
+                if (!rs.isBeforeFirst()) { // true if ResultSet is empty
                     JOptionPane.showMessageDialog(null, "No records found for that period.");
+                    return;
+                }
+
+                // Get metadata for column names
+                ResultSetMetaData meta = rs.getMetaData();
+                int columnCount = meta.getColumnCount();
+                String[] columnNames = new String[columnCount];
+
+                for (int i = 0; i < columnCount; i++) {
+                    columnNames[i] = meta.getColumnLabel(i + 1);
+                }
+
+                // Create table model (read-only)
+                DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
+                    @Override
+                    public boolean isCellEditable(int row, int column) {
+                        return false;
+                    }
+                };
+
+                // Populate table model
+                while (rs.next()) {
+                    Object[] rowData = new Object[columnCount];
+                    for (int i = 0; i < columnCount; i++) {
+                        rowData[i] = rs.getObject(i + 1);
+                    }
+                    model.addRow(rowData);
+                }
+
+                // Display in JTable
+                JTable table = new JTable(model);
+                JScrollPane scrollPane = new JScrollPane(table);
+
+                App.addTable(scrollPane);
             }
 
         } catch (SQLException e) {

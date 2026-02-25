@@ -214,7 +214,7 @@ public class App extends JFrame {
         );
 
         buttonPanel.setBackground(new Color(204, 204, 204));
-        buttonPanel.setLayout(new GridLayout(0, 2, 2, 10));
+        buttonPanel.setLayout(new GridLayout(0, 1, 2, 10));
 
         dashboard.setFont(new Font("Segoe UI", 0, 36)); // NOI18N
         dashboard.setText("Welcome to Dashboard, click any button to get started");
@@ -250,25 +250,21 @@ public class App extends JFrame {
     private void bookingStatusActionPerformed(ActionEvent evt) {//GEN-FIRST:event_bookingStatusActionPerformed
         // TODO add your handling code here:
         com.Reports.BookingReports.generateReport();
-        resetDashboard();
     }//GEN-LAST:event_bookingStatusActionPerformed
 
     private void theaterPerformanceActionPerformed(ActionEvent evt) {//GEN-FIRST:event_theaterPerformanceActionPerformed
         // TODO add your handling code here:
         com.Reports.TheaterPerformanceReport.generateReport();
-        resetDashboard();
     }//GEN-LAST:event_theaterPerformanceActionPerformed
 
     private void financialPerformanceActionPerformed(ActionEvent evt) {//GEN-FIRST:event_financialPerformanceActionPerformed
         // TODO add your handling code here:
         com.Reports.FinanicalPerformanceReport.generateReport();
-        resetDashboard();
     }//GEN-LAST:event_financialPerformanceActionPerformed
 
     private void staffAssignmentActionPerformed(ActionEvent evt) {//GEN-FIRST:event_staffAssignmentActionPerformed
         // TODO add your handling code here:
         com.Reports.StaffAssignmentReport.generateReport();
-        resetDashboard();
     }//GEN-LAST:event_staffAssignmentActionPerformed
 
     private void showRecordsActionPerformed(ActionEvent evt) {//GEN-FIRST:event_showRecordsActionPerformed
@@ -285,8 +281,8 @@ public class App extends JFrame {
             resetDashboard();
         });
         updateShow.addActionListener(e -> {
+            com.Records.ShowRecords.viewAllShows();
             com.Records.ShowRecords.updateShowDetails();
-            resetDashboard();
         });
         deleteShow.addActionListener(e -> {
             com.Records.ShowRecords.deleteShow();
@@ -294,15 +290,12 @@ public class App extends JFrame {
         });
         viewAllShows.addActionListener(e -> {
             com.Records.ShowRecords.viewAllShows();
-            resetDashboard();
         });
         viewShowDetails.addActionListener(e -> {
             com.Records.ShowRecords.viewShowDetails();
-            resetDashboard();
         });
         listAllUpcomingShows.addActionListener(e -> {
             com.Records.ShowRecords.viewUpcomingShows();
-            resetDashboard();
         });
 
         buttonPanel.removeAll();
@@ -331,8 +324,8 @@ public class App extends JFrame {
             resetDashboard();
         });
         updateTheater.addActionListener(e -> {
+            com.Records.TheaterRecords.listAllTheaters();
             com.Records.TheaterRecords.updateTheaterRecord();
-            resetDashboard();
         });
         deleteTheater.addActionListener(e -> {
             com.Records.TheaterRecords.deleteTheaterRecord();
@@ -340,19 +333,15 @@ public class App extends JFrame {
         });
         viewTheaterStatus.addActionListener(e -> {
             com.Records.TheaterRecords.viewTheaterRecordByStatus();
-            resetDashboard();
         });
         listAllActiveTheaters.addActionListener(e -> {
             com.Records.TheaterRecords.listAllActiveTheaters();
-            resetDashboard();
         });
         listAllTheaters.addActionListener(e -> {
             com.Records.TheaterRecords.listAllTheaters();
-            resetDashboard();
         });
         viewTheaterUsedbyShow.addActionListener(e -> {
             com.Records.TheaterRecords.viewTheaterUsedByShow();
-            resetDashboard();
         });
 
         buttonPanel.removeAll();
@@ -384,8 +373,8 @@ public class App extends JFrame {
             resetDashboard();
         });
         updateStaff.addActionListener(e -> {
+            com.Records.StaffRecords.listAllStaff();
             com.Records.StaffRecords.updateStaffDetails();
-            resetDashboard();
         });
         deleteStaff.addActionListener(e -> {
             com.Records.StaffRecords.deleteStaff();
@@ -393,27 +382,21 @@ public class App extends JFrame {
         });
         viewStaffByPos.addActionListener(e -> {
             com.Records.StaffRecords.viewStaffByPosition();
-            resetDashboard();
         });
         viewStaffByEmp.addActionListener(e -> {
             com.Records.StaffRecords.viewStaffByShift();
-            resetDashboard();
         });
         viewStaffSalary.addActionListener(e -> {
             com.Records.StaffRecords.viewAllStaffSalaries();
-            resetDashboard();
         });
         listAllStaff.addActionListener(e -> {
             com.Records.StaffRecords.listAllStaff();
-            resetDashboard();
         });
         viewStaffwShows.addActionListener(e -> {
             com.Records.StaffRecords.viewStaffWithShowDetails();
-            resetDashboard();
         });
         viewAllStaffFrShow.addActionListener(e -> {
             com.Records.StaffRecords.viewStaffForShow();
-            resetDashboard();
         });
 
         buttonPanel.removeAll();
@@ -445,8 +428,8 @@ public class App extends JFrame {
             resetDashboard();
         });
         updateCus.addActionListener(e -> {
+            com.Records.CustomerRecords.listAllCustomers();
             com.Records.CustomerRecords.updateCustomer();
-            resetDashboard();
         });
         deleteCus.addActionListener(e -> {
             com.Records.CustomerRecords.deleteCustomer();
@@ -454,19 +437,15 @@ public class App extends JFrame {
         });
         viewCusA.addActionListener(e -> {
             com.Records.CustomerRecords.viewCustomerByLName();
-            resetDashboard();
         });
         listCusFNames.addActionListener(e -> {
             com.Records.CustomerRecords.listAllCustomerNames();
-            resetDashboard();
         });
         listCus.addActionListener(e -> {
             com.Records.CustomerRecords.listAllCustomers();
-            resetDashboard();
         });
         viewCusWB.addActionListener(e -> {
             com.Records.CustomerRecords.viewCustomerBooking();
-            resetDashboard();
         });
 
         buttonPanel.removeAll();
@@ -484,38 +463,39 @@ public class App extends JFrame {
     private void bookTicketsActionPerformed(ActionEvent evt) {//GEN-FIRST:event_bookTicketsActionPerformed
         // TODO add your handling code here:
         com.Transactions.Booking.bookShowTickets();
-        resetDashboard();
     }//GEN-LAST:event_bookTicketsActionPerformed
 
     private void cancelBookingsActionPerformed(ActionEvent evt) {//GEN-FIRST:event_cancelBookingsActionPerformed
         // TODO add your handling code here:
         com.Transactions.Booking.cancelBooking();
-        resetDashboard();
     }//GEN-LAST:event_cancelBookingsActionPerformed
 
     private void staffAssignmentsActionPerformed(ActionEvent evt) {//GEN-FIRST:event_staffAssignmentsActionPerformed
         // TODO add your handling code here:
         com.Transactions.StaffAssignment.assignStaff();
-        resetDashboard();
     }//GEN-LAST:event_staffAssignmentsActionPerformed
 
     private void scheduleShowsActionPerformed(ActionEvent evt) {//GEN-FIRST:event_scheduleShowsActionPerformed
         // TODO add your handling code here:
         com.Transactions.Booking.addNewTheaterShow();
-        resetDashboard();
     }//GEN-LAST:event_scheduleShowsActionPerformed
 
     private void paymentsActionPerformed(ActionEvent evt) {//GEN-FIRST:event_paymentsActionPerformed
         // TODO add your handling code here:
         com.Transactions.Booking.pay();
-        resetDashboard();
     }//GEN-LAST:event_paymentsActionPerformed
 
     
     public void resetDashboard() {
-        // put this in a function to reset to dashboard
         buttonPanel.removeAll();
         buttonPanel.add(dashboard);
+        buttonPanel.revalidate();
+        buttonPanel.repaint();
+    }
+
+    public static void addTable(JScrollPane scrollPane) {
+        buttonPanel.removeAll();
+        buttonPanel.add(scrollPane, BorderLayout.CENTER);
         buttonPanel.revalidate();
         buttonPanel.repaint();
     }
@@ -572,7 +552,7 @@ public class App extends JFrame {
     private JLabel GroupNo;
     private JButton bookTickets;
     private JButton bookingStatus;
-    private JPanel buttonPanel;
+    private static JPanel buttonPanel;
     private JButton cancelBookings;
     private JButton customerRecords;
     private JLabel dashboard;

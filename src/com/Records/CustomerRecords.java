@@ -1,6 +1,9 @@
 package com.Records;
 
+import com.App;
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+
 import java.awt.*;
 import java.sql.*;
 
@@ -277,16 +280,44 @@ public class CustomerRecords {
     }
 
     private static void connectTable(String query) {
-        try (
+        try {
             Connection conn = dao.SQLConnect.getConnection();
             Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(query)
-        ) {
-            TableDisplay frame = new TableDisplay();
-            frame.displayResultSet(rs);
-            frame.setVisible(true);
+            ResultSet rs = stmt.executeQuery(query);
 
-        } catch (Exception e) {
+            // Get metadata for column names
+            ResultSetMetaData rsmd = rs.getMetaData();
+            int columnCount = rsmd.getColumnCount();
+            String[] columnNames = new String[columnCount];
+            for (int i = 1; i <= columnCount; i++) {
+                columnNames[i - 1] = rsmd.getColumnName(i);
+            }
+
+            // Read rows into DefaultTableModel
+            DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
+                @Override
+                public boolean isCellEditable(int row, int column) {
+                    return false;
+                }
+            };
+        
+            while (rs.next()) {
+                Object[] rowData = new Object[columnCount];
+                for (int i = 1; i <= columnCount; i++) {
+                    rowData[i - 1] = rs.getObject(i);
+                }
+                model.addRow(rowData);
+            }
+
+            // Display in JTable
+            JTable table = new JTable(model);
+            JScrollPane scrollPane = new JScrollPane(table);
+
+            App.addTable(scrollPane);
+
+            rs.close();
+            stmt.close();
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }

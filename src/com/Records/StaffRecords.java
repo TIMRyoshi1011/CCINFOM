@@ -1,9 +1,14 @@
 package com.Records;
 
-import java.sql.*;
+import com.App;
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+
 import java.awt.*;
-import java.util.*;
+import java.sql.*;
+
+import java.util.List;
+import java.util.ArrayList;
 
 public class StaffRecords {
     static String getStaffId = "";
@@ -440,10 +445,10 @@ public class StaffRecords {
         inputFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         inputFrame.setResizable(false);
 
-        ArrayList<String> showIds = new ArrayList<>();
-        ArrayList<String> theaterShowIds = new ArrayList<>();
-        ArrayList<String> scheduleDescriptions = new ArrayList<>();
-        ArrayList<String> showTitles = new ArrayList<>();
+        List<String> showIds = new ArrayList<>();
+        List<String> theaterShowIds = new ArrayList<>();
+        List<String> scheduleDescriptions = new ArrayList<>();
+        List<String> showTitles = new ArrayList<>();
 
         JLabel label1 = new JLabel("Select a show:");
         String showsQuery = "SELECT SHOW_ID, TITLE FROM shows ORDER BY TITLE";
@@ -579,22 +584,49 @@ public class StaffRecords {
     // }
     
     private static void connectTable(String query) {
-        try (
+        try {
             Connection conn = dao.SQLConnect.getConnection();
             Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(query)
-        ) {
-            TableDisplay frame = new TableDisplay();
-            frame.displayResultSet(rs);
-            frame.setVisible(true);
+            ResultSet rs = stmt.executeQuery(query);
 
-        } catch (Exception e) {
+            // Get metadata for column names
+            ResultSetMetaData rsmd = rs.getMetaData();
+            int columnCount = rsmd.getColumnCount();
+            String[] columnNames = new String[columnCount];
+            for (int i = 1; i <= columnCount; i++) {
+                columnNames[i - 1] = rsmd.getColumnName(i);
+            }
+
+            // Read rows into DefaultTableModel
+            DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
+                @Override
+                public boolean isCellEditable(int row, int column) {
+                    return false;
+                }
+            };
+        
+            while (rs.next()) {
+                Object[] rowData = new Object[columnCount];
+                for (int i = 1; i <= columnCount; i++) {
+                    rowData[i - 1] = rs.getObject(i);
+                }
+                model.addRow(rowData);
+            }
+
+            // Display in JTable
+            JTable table = new JTable(model);
+            JScrollPane scrollPane = new JScrollPane(table);
+
+            App.addTable(scrollPane);
+
+            rs.close();
+            stmt.close();
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     private static void connectTableifUnknown(String query, String position) {
-
         try (
             Connection conn = dao.SQLConnect.getConnection();
             PreparedStatement pstmt = conn.prepareStatement(query)
@@ -603,10 +635,37 @@ public class StaffRecords {
 
             try (ResultSet rs = pstmt.executeQuery()) {
 
-                TableDisplay frame = new TableDisplay();
-                frame.displayResultSet(rs);
-                frame.setTitle("Result");
-                frame.setVisible(true);
+                // Get metadata for column names
+                ResultSetMetaData meta = rs.getMetaData();
+                int columnCount = meta.getColumnCount();
+                String[] columnNames = new String[columnCount];
+
+                for (int i = 0; i < columnCount; i++) {
+                    columnNames[i] = meta.getColumnLabel(i + 1); // use getColumnLabel for alias support
+                }
+
+                // Create table model
+                DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
+                    @Override
+                    public boolean isCellEditable(int row, int column) {
+                        return false; // make table read-only
+                    }
+                };
+
+                // Populate table model
+                while (rs.next()) {
+                    Object[] rowData = new Object[columnCount];
+                    for (int i = 0; i < columnCount; i++) {
+                        rowData[i] = rs.getObject(i + 1);
+                    }
+                    model.addRow(rowData);
+                }
+
+                // Create JTable
+                JTable table = new JTable(model);
+                JScrollPane scrollPane = new JScrollPane(table);
+
+                App.addTable(scrollPane);
             }
 
         } catch (SQLException e) {

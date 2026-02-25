@@ -2,6 +2,9 @@ package com.Reports;
 
 import java.sql.*;
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+
+import com.App;
 import java.awt.*;
 
 public class FinanicalPerformanceReport {
@@ -143,7 +146,6 @@ public class FinanicalPerformanceReport {
     }
 
     private static void connectTableifUnknown(String query, Integer missing, Integer missing2) {
-
         try (
             Connection conn = dao.SQLConnect.getConnection();
             PreparedStatement pstmt = conn.prepareStatement(query)
@@ -152,22 +154,46 @@ public class FinanicalPerformanceReport {
             if (missing2 != null) {
                 pstmt.setInt(2, missing2);
             }
-            boolean hasData = false;
+
             try (ResultSet rs = pstmt.executeQuery()) {
 
-                if (rs.next()) {
-                    hasData = true;
-                }
-
-                if (hasData) {
-                    TableDisplay frame = new TableDisplay();
-                    frame.displayResultSet(rs);
-                    frame.setTitle("Result");
-                    frame.setVisible(true);
-                }
-
-                else 
+                // Check if ResultSet has data
+                if (!rs.isBeforeFirst()) { // true if ResultSet is empty
                     JOptionPane.showMessageDialog(null, "No records found for that period.");
+                    return;
+                }
+
+                // Get metadata for column names
+                ResultSetMetaData meta = rs.getMetaData();
+                int columnCount = meta.getColumnCount();
+                String[] columnNames = new String[columnCount];
+
+                for (int i = 0; i < columnCount; i++) {
+                    columnNames[i] = meta.getColumnLabel(i + 1);
+                }
+
+                // Create table model (read-only)
+                DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
+                    @Override
+                    public boolean isCellEditable(int row, int column) {
+                        return false;
+                    }
+                };
+
+                // Populate table model
+                while (rs.next()) {
+                    Object[] rowData = new Object[columnCount];
+                    for (int i = 0; i < columnCount; i++) {
+                        rowData[i] = rs.getObject(i + 1);
+                    }
+                    model.addRow(rowData);
+                }
+
+                // Display in JTable
+                JTable table = new JTable(model);
+                JScrollPane scrollPane = new JScrollPane(table);
+
+                App.addTable(scrollPane);
             }
 
         } catch (SQLException e) {
