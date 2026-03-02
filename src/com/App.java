@@ -504,14 +504,20 @@ public class App extends JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        String password = JOptionPane.showInputDialog("Enter SQL Password: ");
-        SQLConnect.setPassword(password);
 
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
+
+        JPasswordField passwordField = new JPasswordField();
+
+        JOptionPane.showConfirmDialog(null, passwordField, "Enter Password", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+        char[] getPassword = passwordField.getPassword(); 
+        String password = String.valueOf(getPassword);
+        SQLConnect.setPassword(password);
 
         try {
             final String url = "jdbc:mysql://localhost:3306/?allowMultiQueries=true";
@@ -521,12 +527,12 @@ public class App extends JFrame {
                 final String URL = "jdbc:mysql://localhost:3306/theatershows";
                 Connection conn2 = DriverManager.getConnection(URL, "root", password);
                 JOptionPane.showMessageDialog(null, "SUCCESSFULLY CONNECTED TO DATABASE");
-
+                conn2.close();
             } catch (SQLException e) {
                 JOptionPane.showMessageDialog(null, "Error connecting to DB: " + e.getMessage(), "Database Connection Error", JOptionPane.ERROR_MESSAGE);
                 System.exit(1);
             }
-
+            conn.close();
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Wrong Password", JOptionPane.ERROR_MESSAGE);
             System.exit(1);
