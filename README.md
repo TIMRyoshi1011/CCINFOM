@@ -1,5 +1,5 @@
 # CCINFOM Database Application Project
-GitHub repository for Final Project in CCINFOM Course from CCS in DLSU from Term 1 AY 2025-2026
+GitHub Repository for Final Project in CCINFOM Course from CCS in DLSU from Term 1 AY 2025-2026
 - This Program is made by 4 people as a group requirement for this project
 - The Layout of This Program is Made in Apache NetBeans and is Made, Compiled and Run in Visual Studio Code <br> <br>
 **To Compile**: dir /s /b src\*.java > sources.txt <br>
