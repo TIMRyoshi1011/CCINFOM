@@ -277,16 +277,16 @@ public class App extends JFrame {
         JButton listAllUpcomingShows = new JButton("List All Upcoming Shows");
 
         addShow.addActionListener(e -> {
+            com.Records.ShowRecords.viewAllShows();
             com.Records.ShowRecords.enterShowDetails();
-            resetDashboard();
         });
         updateShow.addActionListener(e -> {
             com.Records.ShowRecords.viewAllShows();
             com.Records.ShowRecords.updateShowDetails();
         });
         deleteShow.addActionListener(e -> {
+            com.Records.ShowRecords.viewAllShows();
             com.Records.ShowRecords.deleteShow();
-            resetDashboard();
         });
         viewAllShows.addActionListener(e -> {
             com.Records.ShowRecords.viewAllShows();
@@ -320,16 +320,16 @@ public class App extends JFrame {
         JButton viewTheaterUsedbyShow = new JButton("View Theaters Used by Show");
 
         addTheater.addActionListener(e -> {
+            com.Records.TheaterRecords.listAllTheaters();
             com.Records.TheaterRecords.addTheaterRecord();
-            resetDashboard();
         });
         updateTheater.addActionListener(e -> {
             com.Records.TheaterRecords.listAllTheaters();
             com.Records.TheaterRecords.updateTheaterRecord();
         });
         deleteTheater.addActionListener(e -> {
+            com.Records.TheaterRecords.listAllTheaters();
             com.Records.TheaterRecords.deleteTheaterRecord();
-            resetDashboard();
         });
         viewTheaterStatus.addActionListener(e -> {
             com.Records.TheaterRecords.viewTheaterRecordByStatus();
@@ -369,16 +369,16 @@ public class App extends JFrame {
         JButton viewAllStaffFrShow = new JButton("View All Staff for a Specific Show");
 
         addStaff.addActionListener(e -> {
+            com.Records.StaffRecords.listAllStaff();
             com.Records.StaffRecords.enterStaffDetails();
-            resetDashboard();
         });
         updateStaff.addActionListener(e -> {
             com.Records.StaffRecords.listAllStaff();
             com.Records.StaffRecords.updateStaffDetails();
         });
         deleteStaff.addActionListener(e -> {
+            com.Records.StaffRecords.listAllStaff();
             com.Records.StaffRecords.deleteStaff();
-            resetDashboard();
         });
         viewStaffByPos.addActionListener(e -> {
             com.Records.StaffRecords.viewStaffByPosition();
@@ -424,16 +424,16 @@ public class App extends JFrame {
         JButton viewCusWB = new JButton("View Customers with booking details");
 
         addCus.addActionListener(e -> {
+            com.Records.CustomerRecords.listAllCustomers();
             com.Records.CustomerRecords.AddCustomer();
-            resetDashboard();
         });
         updateCus.addActionListener(e -> {
             com.Records.CustomerRecords.listAllCustomers();
             com.Records.CustomerRecords.updateCustomer();
         });
         deleteCus.addActionListener(e -> {
+            com.Records.CustomerRecords.listAllCustomers();
             com.Records.CustomerRecords.deleteCustomer();
-            resetDashboard();
         });
         viewCusA.addActionListener(e -> {
             com.Records.CustomerRecords.viewCustomerByLName();
