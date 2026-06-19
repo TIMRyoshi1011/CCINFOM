@@ -292,6 +292,7 @@ public class App extends JFrame {
             com.Records.ShowRecords.viewAllShows();
         });
         viewShowDetails.addActionListener(e -> {
+            com.Records.ShowRecords.viewAllShows();
             com.Records.ShowRecords.viewShowDetails();
         });
         listAllUpcomingShows.addActionListener(e -> {
@@ -341,6 +342,7 @@ public class App extends JFrame {
             com.Records.TheaterRecords.listAllTheaters();
         });
         viewTheaterUsedbyShow.addActionListener(e -> {
+            com.Records.ShowRecords.viewAllShows();
             com.Records.TheaterRecords.viewTheaterUsedByShow();
         });
 
@@ -393,6 +395,7 @@ public class App extends JFrame {
             com.Records.StaffRecords.listAllStaff();
         });
         viewStaffwShows.addActionListener(e -> {
+            com.Records.StaffRecords.listAllStaff();
             com.Records.StaffRecords.viewStaffWithShowDetails();
         });
         viewAllStaffFrShow.addActionListener(e -> {
